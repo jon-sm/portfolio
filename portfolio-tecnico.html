@@ -1,0 +1,1860 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technical Portfolio · Jon Sánchez Martín</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --surface-0: #f6f5f2;
+    --surface-1: #fcfcfb;
+    --surface-2: #f0efec;
+    --border:    #e0dfda;
+    --border-strong: #c9c8c2;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #7a7975;
+    --series-1: #2a78d6;
+    --series-2: #eb6834;
+    --series-3: #1baf7a;
+    --series-8: #e34948;
+    --tag-bg: #eceae5;
+    --shadow: 0 4px 14px rgb(0 0 0 / .10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      --surface-0: #121211; --surface-1: #1a1a19; --surface-2: #222221;
+      --border: #33332f; --border-strong: #4a4a45;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #94938a;
+      --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-8: #e66767;
+      --tag-bg: #262623; --shadow: 0 4px 14px rgb(0 0 0 / .5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --surface-0: #121211; --surface-1: #1a1a19; --surface-2: #222221;
+    --border: #33332f; --border-strong: #4a4a45;
+    --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #94938a;
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-8: #e66767;
+    --tag-bg: #262623; --shadow: 0 4px 14px rgb(0 0 0 / .5);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--surface-0); color: var(--text-primary);
+    font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px 96px; }
+
+  h1,h2,h3,h4 { line-height: 1.25; margin: 0; font-weight: 650; letter-spacing: -0.01em; }
+  h1 { font-size: clamp(26px, 4vw, 38px); letter-spacing: -0.025em; }
+  h2 { font-size: clamp(20px, 2.5vw, 25px); margin-top: 54px; margin-bottom: 8px; }
+  h3 { font-size: 17px; }
+  p { margin: 0 0 14px; color: var(--text-secondary); }
+  a { color: var(--series-1); }
+  strong { color: var(--text-primary); font-weight: 620; }
+  code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.88em; }
+  em { font-style: italic; }
+
+  /* ---------- top bar, tabs, language switch ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 30;
+    background: color-mix(in srgb, var(--surface-0) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner { max-width: 1040px; margin: 0 auto; padding: 12px 24px 0; }
+  .brand { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+  .brand .name { font-size: 15px; font-weight: 650; letter-spacing: -0.01em; }
+  .brand .who { font-size: 12.5px; color: var(--text-muted); }
+  .brand .spacer { flex: 1 1 auto; }
+
+  .langsel { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface-1); }
+  .langsel button {
+    appearance: none; border: 0; background: none; cursor: pointer; font: inherit;
+    font-size: 11.5px; font-weight: 600; letter-spacing: .04em; color: var(--text-muted);
+    padding: 3px 9px; border-radius: 5px; line-height: 1.5;
+  }
+  .langsel button:hover { color: var(--text-primary); }
+  .langsel button[aria-pressed="true"] { background: var(--surface-2); color: var(--text-primary); }
+  .langsel button:focus-visible { outline: 2px solid var(--series-1); outline-offset: 1px; }
+
+  .tabs { display: flex; gap: 2px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    appearance: none; border: 0; background: none; cursor: pointer;
+    font: inherit; font-size: 13.5px; font-weight: 550; color: var(--text-secondary);
+    padding: 9px 14px 10px; border-bottom: 2px solid transparent; white-space: nowrap;
+    display: flex; align-items: center; gap: 8px; border-radius: 6px 6px 0 0;
+  }
+  .tab:hover { color: var(--text-primary); background: var(--surface-2); }
+  .tab[aria-selected="true"] { color: var(--text-primary); border-bottom-color: var(--series-1); }
+  .tab .cnt {
+    font-size: 11px; color: var(--text-muted); background: var(--tag-bg);
+    border-radius: 20px; padding: 1px 7px; font-variant-numeric: tabular-nums;
+  }
+  .tab[aria-selected="true"] .cnt { color: var(--text-secondary); }
+  .tab:focus-visible { outline: 2px solid var(--series-1); outline-offset: -2px; }
+
+  .panel[hidden] { display: none; }
+  header.hero { padding: 38px 0 26px; border-bottom: 1px solid var(--border); }
+  .eyebrow { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+  .lede { font-size: 17.5px; max-width: 68ch; margin-top: 14px; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 18px; font-size: 13px; color: var(--text-muted); }
+  .section-note { font-size: 14px; color: var(--text-muted); margin: 0 0 22px; max-width: 74ch; }
+
+  /* ---------- tiles ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 12px; margin: 24px 0 8px; }
+  .tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 16px 16px 14px; }
+  .tile .n { font-size: 29px; font-weight: 650; letter-spacing: -0.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .tile .n small { font-size: 15px; font-weight: 550; color: var(--text-secondary); letter-spacing: 0; }
+  .tile .k { font-size: 12.5px; color: var(--text-secondary); margin-top: 6px; }
+  .tile .s { font-size: 11.5px; color: var(--text-muted); margin-top: 3px; }
+
+  /* ---------- charts ---------- */
+  figure { margin: 0 0 12px; background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  figcaption { font-size: 15px; font-weight: 620; color: var(--text-primary); margin-bottom: 2px; }
+  .sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 720px) { .chart-grid { grid-template-columns: 1fr; } }
+
+  .hbars { display: grid; gap: 6px; }
+  .hbar { display: grid; grid-template-columns: 46px 1fr; align-items: center; gap: 10px; }
+  .vlabels .hbar { grid-template-columns: 210px 1fr; }
+  .vlabels .yr { font-size: 12.5px; font-weight: 550; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  @media (max-width: 620px) { .vlabels .hbar { grid-template-columns: 1fr; } .vlabels .yr { margin-bottom: 2px; } }
+  .hbar .yr { font-size: 12.5px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+  .hbar .track { position: relative; height: 20px; display: flex; align-items: center; gap: 8px; }
+  .hbar .fill { height: 14px; border-radius: 0 4px 4px 0; background: var(--series-1); min-width: 2px; }
+  .hbar.s2 .fill { background: var(--series-2); }
+  .hbar .val { font-size: 12.5px; color: var(--text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .axis-note { font-size: 11.5px; color: var(--text-muted); margin-top: 8px; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px; }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .swatch { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+
+  .churn { display: grid; gap: 10px; }
+  .churn-row { display: grid; grid-template-columns: 46px 1fr; align-items: center; gap: 10px; }
+  .churn-row .yr { font-size: 12.5px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+  .churn-bars { display: grid; gap: 2px; }
+  .churn-bar { display: flex; align-items: center; gap: 8px; }
+  .churn-bar .f { height: 10px; border-radius: 0 4px 4px 0; min-width: 2px; }
+  .churn-bar.add .f { background: var(--series-1); }
+  .churn-bar.del .f { background: var(--series-8); }
+  .churn-bar .t { font-size: 11.5px; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .cols { display: flex; align-items: flex-end; gap: 2px; height: 150px; border-bottom: 1px solid var(--border-strong); }
+  .col { flex: 1 1 0; background: var(--series-1); border-radius: 4px 4px 0 0; min-height: 2px; transition: opacity .12s; }
+  .col:hover { opacity: .7; }
+  .xaxis { display: flex; gap: 2px; margin-top: 7px; }
+  .xtick { flex: 1 1 0; font-size: 11px; color: var(--text-muted); text-align: center; font-variant-numeric: tabular-nums; }
+  .peaks { font-size: 11.5px; color: var(--text-muted); margin-top: 12px; }
+  .peaks strong { color: var(--text-secondary); font-weight: 600; }
+  #tip {
+    position: fixed; z-index: 60; pointer-events: none; opacity: 0;
+    background: var(--surface-1); color: var(--text-primary);
+    border: 1px solid var(--border-strong); border-radius: 7px; padding: 6px 9px;
+    font-size: 12.5px; box-shadow: var(--shadow); transition: opacity .1s;
+    white-space: nowrap; font-variant-numeric: tabular-nums;
+  }
+
+  details.tbl { margin: 4px 0 0; }
+  details.tbl summary { cursor: pointer; color: var(--text-muted); font-size: 12.5px; padding: 4px 0; }
+  .scroll-x { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; margin-top: 8px; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th { color: var(--text-secondary); font-weight: 600; }
+  .tbl-wrap th, .tbl-wrap td { white-space: normal; vertical-align: top; line-height: 1.5; }
+  .tbl-wrap { min-width: 660px; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ---------- timeline ---------- */
+  .era { position: relative; padding: 0 0 4px 26px; margin-bottom: 26px; border-left: 2px solid var(--border); }
+  .era:last-child { border-left-color: transparent; }
+  .era::before {
+    content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--series-1); border: 2px solid var(--surface-0);
+  }
+  .era h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+  .era h3 .when { font-size: 12.5px; font-weight: 500; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .era .role { font-size: 13.5px; color: var(--series-1); font-weight: 600; margin: 4px 0 8px; }
+  .era ul { margin: 8px 0 10px; padding-left: 18px; }
+  .era li { color: var(--text-secondary); margin-bottom: 5px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { font-size: 11.5px; background: var(--tag-bg); color: var(--text-secondary); border-radius: 5px; padding: 3px 8px; }
+  .impact { font-size: 13.5px; background: var(--surface-2); border-left: 3px solid var(--series-3); border-radius: 0 7px 7px 0; padding: 9px 13px; margin-top: 10px; color: var(--text-secondary); }
+  .impact b { color: var(--text-primary); font-weight: 620; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-top: 20px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .card h3 { font-size: 15.5px; margin-bottom: 8px; }
+  .card ul { margin: 0; padding-left: 17px; }
+  .card li { font-size: 13.5px; color: var(--text-secondary); margin-bottom: 5px; }
+  .card .ev { font-size: 11.5px; color: var(--text-muted); margin-top: 10px; }
+
+  .callout { background: var(--surface-1); border: 1px solid var(--border); border-left: 3px solid var(--series-2); border-radius: 0 10px 10px 0; padding: 16px 18px; margin: 20px 0; }
+  .callout h3 { font-size: 15px; margin-bottom: 8px; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  footer { margin-top: 60px; padding-top: 22px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-muted); }
+  footer strong { color: var(--text-secondary); }
+
+  @media print {
+    body { background: #fff; }
+    .topbar { position: static; }
+    .tabs, .langsel { display: none; }
+    .panel[hidden] { display: block !important; }
+    .tile, figure, .card, .era { break-inside: avoid; }
+    h2 { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="name" id="brandName"></span>
+      <span class="who" id="brandWho"></span>
+      <span class="spacer"></span>
+      <span class="langsel" id="langsel" role="group"></span>
+    </div>
+    <div class="tabs" role="tablist" id="tablist"></div>
+  </div>
+</div>
+
+<div class="wrap" id="panels"></div>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   1) DATOS NUMÉRICOS — compartidos entre idiomas, fuente única de verdad.
+      NUMERIC DATA — shared across languages, single source of truth.
+   ===================================================================== */
+const NUM = {
+  slidesgo: {
+    commits: 3398,
+    monthly: [
+      ["2019-10",39],["2019-11",17],["2019-12",14],
+      ["2020-01",36],["2020-02",14],["2020-03",5],["2020-04",1],["2020-05",2],["2020-06",25],["2020-07",3],["2020-08",14],["2020-09",13],["2020-10",32],["2020-11",46],["2020-12",36],
+      ["2021-01",100],["2021-02",20],["2021-03",49],["2021-04",47],["2021-05",73],["2021-06",20],["2021-07",56],["2021-08",2],["2021-09",48],["2021-10",72],["2021-11",14],["2021-12",33],
+      ["2022-01",65],["2022-02",43],["2022-03",32],["2022-04",14],["2022-05",20],["2022-06",22],["2022-07",34],["2022-08",40],["2022-09",35],["2022-10",25],["2022-11",4],["2022-12",11],
+      ["2023-01",68],["2023-02",39],["2023-03",20],["2023-04",13],["2023-05",35],["2023-06",18],["2023-07",28],["2023-08",47],["2023-09",33],["2023-10",59],["2023-11",30],["2023-12",57],
+      ["2024-01",40],["2024-02",46],["2024-03",26],["2024-04",62],["2024-05",87],["2024-06",23],["2024-07",6],["2024-08",39],["2024-09",14],["2024-10",18],["2024-11",13],["2024-12",60],
+      ["2025-01",67],["2025-02",62],["2025-03",41],["2025-04",15],["2025-05",68],["2025-06",61],["2025-07",103],["2025-08",48],["2025-09",33],["2025-10",61],["2025-11",50],["2025-12",5],
+      ["2026-01",52],["2026-02",93],["2026-03",174],["2026-04",79],["2026-05",164],["2026-06",111],["2026-07",54]
+    ],
+    yearly: [
+      {y:2019, commits:70,  prs:7,  add:29583,  del:11984},
+      {y:2020, commits:227, prs:24, add:22051,  del:2887},
+      {y:2021, commits:534, prs:40, add:17419,  del:11530},
+      {y:2022, commits:345, prs:7,  add:106200, del:54288},
+      {y:2023, commits:447, prs:40, add:26371,  del:33149},
+      {y:2024, commits:434, prs:51, add:25973,  del:16208},
+      {y:2025, commits:614, prs:32, add:31940,  del:9414},
+      {y:2026, commits:727, prs:86, add:71888,  del:15522, partial:true}
+    ]
+  },
+  wepik: {
+    commits: 657,
+    monthly: [
+      ["2020-01",6],["2020-02",39],["2020-03",40],["2020-04",53],["2020-05",7],["2020-06",28],["2020-07",30],["2020-08",14],["2020-09",21],["2020-10",21],["2020-11",13],["2020-12",9],
+      ["2021-01",10],["2021-02",23],["2021-03",4],["2021-04",0],["2021-05",3],["2021-06",1],["2021-07",1],["2021-08",0],["2021-09",0],["2021-10",0],["2021-11",19],["2021-12",33],
+      ["2022-01",0],["2022-02",10],["2022-03",3],["2022-04",0],["2022-05",71],["2022-06",29],["2022-07",45],["2022-08",37],["2022-09",5],["2022-10",26],["2022-11",9],["2022-12",2],
+      ["2023-01",5],["2023-02",0],["2023-03",0],["2023-04",0],["2023-05",0],["2023-06",0],["2023-07",0],["2023-08",0],["2023-09",1],["2023-10",0],["2023-11",0],["2023-12",2],
+      ["2024-01",0],["2024-02",0],["2024-03",0],["2024-04",16],["2024-05",2],["2024-06",1],["2024-07",6],["2024-08",3],["2024-09",3],["2024-10",0],["2024-11",0],["2024-12",0],
+      ["2025-01",1],["2025-02",0],["2025-03",0],["2025-04",0],["2025-05",0],["2025-06",0],["2025-07",0],["2025-08",0],["2025-09",0],["2025-10",1],["2025-11",0],["2025-12",0],
+      ["2026-01",0],["2026-02",0],["2026-03",0],["2026-04",0],["2026-05",3],["2026-06",1]
+    ],
+    yearly: [
+      {y:2020, commits:281, prs:18, add:10557, del:6082},
+      {y:2021, commits:94,  prs:13, add:3273,  del:1130},
+      {y:2022, commits:237, prs:13, add:34875, del:29532},
+      {y:2023, commits:8,   prs:0,  add:81,    del:44},
+      {y:2024, commits:31,  prs:3,  add:1439,  del:546},
+      {y:2025, commits:2,   prs:0,  add:17,    del:22},
+      {y:2026, commits:4,   prs:1,  add:68,    del:4, partial:true}
+    ]
+  },
+  otros: {
+    commits: 184,
+    byRepo: [
+      {value:109, total:164},
+      {value:43,  total:49},
+      {value:21,  total:4927},
+      {value:6,   total:1788},
+      {value:5,   total:12068}
+    ],
+    yearly: [
+      {y:2021, commits:35, prs:0}, {y:2022, commits:37, prs:0}, {y:2023, commits:52, prs:1},
+      {y:2024, commits:24, prs:1}, {y:2025, commits:27, prs:0}, {y:2026, commits:9, prs:0, partial:true}
+    ]
+  }
+};
+
+/* =====================================================================
+   2) TEXTOS — un paquete por idioma, mismas claves.
+      TEXT — one pack per language, identical keys.
+   ===================================================================== */
+const I18N = {
+es: {
+  htmlLang: "es",
+  locale: "es-ES",
+  months: ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"],
+  brandName: "Portfolio técnico · Jon Sánchez Martín",
+  brandWho: "análisis del historial Git · datos a 27 jul 2026",
+  tabAria: "Proyectos",
+  langAria: "Idioma",
+  ui: {
+    tableToggle: "Ver datos en tabla",
+    yearTableToggle: "Ver datos anuales en tabla",
+    peaks: "Picos",
+    partialPrefix: "* año en curso, datos hasta",
+    secFigures: "Resumen en cifras",
+    secActivity: "Actividad a lo largo del tiempo",
+    secActivityNote: "Tres vistas del mismo historial: volumen mensual (el pulso real del trabajo), PRs entregadas por año (unidad de valor mergeado) y líneas movidas por año (magnitud del cambio estructural).",
+    figMonths: "Commits por mes",
+    figCommits: "Commits por año",
+    figPrs: "Pull Requests mergeadas por año",
+    figChurn: "Líneas de código movidas por año",
+    legendAdded: "Añadidas",
+    legendRemoved: "Eliminadas",
+    secEras: "Trayectoria por etapas",
+    secStrategies: "Estrategias técnicas aplicadas",
+    secTime: "Tiempo y ritmo",
+    secTimeNote: "Derivado de las marcas temporales de autoría. Un commit prueba que hubo trabajo ese día; no mide las horas exactas ni el tiempo dedicado a revisiones, diseño, incidencias o reuniones.",
+    impactLabel: "Impacto probable en usuario:",
+    impactLabelShort: "Impacto probable:",
+    evidenceLabel: "Evidencia:",
+    thYear: "Año", thCommits: "Commits", thPrs: "PRs", thAdded: "Añadidas", thRemoved: "Eliminadas",
+    thMonth: "Mes", thProject: "Proyecto", thMine: "Suyos", thTotal: "Total", thWeight: "Peso", thNature: "Naturaleza",
+    thPeriod: "Periodo", thFocus: "Foco", thProjects: "Proyectos", thMilestones: "Hitos",
+    projectPrefix: "Proyecto:",
+    ofProject: "del proyecto",
+    commitsSuffix: "commits",
+    commitSuffix: "commit"
+  },
+  global: {
+    label: "Resumen global",
+    hint: "los siete proyectos juntos",
+    eyebrow: "Vista consolidada",
+    title: "Jon Sánchez Martín",
+    lede: `Casi siete años construyendo los dos productos de presentación y diseño de Freepik, más la
+      infraestructura y las herramientas que los sostienen. Un perfil <strong>full-stack con centro de gravedad en
+      backend y plataforma</strong> que ha sido <em>owner</em> del dominio de pagos, ejecutó la migración a GCP de
+      <strong>dos productos el mismo año</strong> —y la mantiene declarada en Terraform desde entonces—, y lleva dos
+      años liderando técnicamente el <strong>AI Presentation Maker</strong> de punta a punta.`,
+    meta: ["Periodo: <strong>15 oct 2019 → 16 jul 2026</strong>", "7 proyectos analizados", "Fuente: historial Git completo, todas las ramas"],
+    secTiles: "Los siete proyectos juntos",
+    tiles: [
+      {n:"4.239", k:"commits en total", s:"en 7 proyectos distintos"},
+      {n:"338", k:"Pull Requests mergeadas", s:"288 Slidesgo · 48 Wepik · 2 resto"},
+      {n:"947", k:"días con entrega de código", s:"unión de fechas de los 7 proyectos"},
+      {n:"≈4,3 <small>años-persona</small>", k:"de días con entrega efectiva", s:"947 días / 220 laborables por año"},
+      {n:"+420k<small> / −225k</small>", k:"líneas de código", s:"excluyendo fixtures de test"},
+      {n:"5.904", k:"ficheros distintos tocados", s:"4.056 creados desde cero"},
+      {n:"6 <small>años 9 m</small>", k:"de trayectoria continua", s:"oct 2019 → jul 2026"},
+      {n:"3", k:"sábados con commits", s:"en 947 días activos; ningún domingo"}
+    ],
+    tilesNote: `Suma de los siete proyectos, agregando las cuatro identidades de autor. Los días activos son la
+      <em>unión</em> de fechas, no la suma: 758 días en Slidesgo + 220 en Wepik + 114 en el resto, menos los
+      solapados, dan 947.`,
+    compareFig: "Commits por año y proyecto",
+    compareNote: "Commits por año y proyecto. Las tres series comparten escala; los huecos de Wepik en 2023 y 2025 coinciden con los picos de Slidesgo.",
+    secArc: "Arco profesional",
+    arcNote: `Ocho etapas en 82 meses. Los periodos se solapan porque el trabajo se solapaba: el editor gráfico
+      convivió con la capa de pagos, y la infraestructura se tocaba el mismo día que el producto.`,
+    arc: [
+      {when:"2019 – 2020", focus:"Fundamentos de plataforma y contenido", projects:"Slidesgo", milestone:"Panel de administración, sistema de publicación, Cloudflare, apertura del sitio en francés, PHP 7.4"},
+      {when:"2020 – 2021", focus:"Editor gráfico de manipulación directa", projects:"Wepik", milestone:"Recorte de imágenes, colores globales del documento, undo/redo, Dropbox, subida múltiple"},
+      {when:"2021", focus:"Owner de pagos, fiscalidad y BI", projects:"Slidesgo", milestone:"IVA de UE, UK, USA e India, Cashier v13, disputas por webhook, ARPU y réplica de descargas"},
+      {when:"2022", focus:"Migración a GCP de dos productos e infraestructura como código", projects:"Slidesgo · Wepik · Terraform", milestone:"Istio, PHP-FPM, renderer asíncrono, probes de Kubernetes — +141k líneas entre los dos productos"},
+      {when:"2023", focus:"Upgrades mayores, seguridad y motor de pricing", projects:"Slidesgo · API de pagos", milestone:"PHP 8.2, Laravel 10, cadena CSPT→XSS corregida, test A/B de precios por región"},
+      {when:"2024", focus:"Vue 3, observabilidad y primeros productos de IA", projects:"Slidesgo · Grafana", milestone:"Vite y Vue 3, OpenTelemetry, Prometheus, documento→presentación, rollout por % de tráfico"},
+      {when:"2025", focus:"AI Presentation Maker como producto", projects:"Slidesgo", milestone:"Streaming con fallback, KEDA, generación de imagen, separación de colas, salida en Markdown"},
+      {when:"2026", focus:"Editor visual y calidad generativa medible", projects:"Slidesgo", milestone:"Modelo de elementos editables, custom layouts, evaluación de la librería con IA, hardening"}
+    ],
+    secCross: "Lo que solo se ve mirando los siete a la vez",
+    crossNote: "Cinco conclusiones que ningún proyecto aislado permite sostener.",
+    crossFindings: [
+      {h:"2022: dos migraciones a GCP, un solo ingeniero", body:`En enero de 2022 abre la migración a GCP de Slidesgo (#2497); en mayo, la de Wepik (#3493). Ambas con Istio, buckets de GCS, imágenes Docker normalizadas y el mismo par de herramientas de desarrollo local (túnel a la DB y <span class="mono">syncdb</span>). El año suma <strong>+141k líneas</strong> entre los dos productos. Es el argumento más fuerte del portfolio: la migración no fue un acierto irrepetible, fue un procedimiento aplicado dos veces.`},
+      {h:"Los huecos de un proyecto son los picos del otro", body:`Wepik queda casi vacío en 2023 y 2025 justo cuando Slidesgo alcanza sus máximos. Analizado proyecto a proyecto parece discontinuidad; analizado en conjunto es una sola línea de dedicación que se mueve al producto donde está el valor. Solo <strong>67 días</strong> en siete años tienen commits en ambos: no había multitarea, había foco secuencial.`},
+      {h:"Dos perfiles técnicos complementarios", body:`Slidesgo evidencia backend de dominio, fiscalidad, pipelines de LLM y plataforma. Wepik evidencia <strong>frontend gráfico de manipulación directa</strong> — geometría, recorte, transformaciones, undo/redo, paridad de render cliente/servidor — que no aparece en ningún otro sitio. Juntos cubren desde el despliegue hasta el píxel que arrastra el usuario.`},
+      {h:"El mismo criterio en proyectos distintos", body:`Los patrones se repiten sin importar el proyecto: render y trabajo pesado fuera del request del usuario, degradación elegante antes que error, límites decididos en lugar de descubiertos en producción, y herramientas internas para que el resto del equipo opere lo que él construye.`},
+      {h:"La infraestructura no era un proyecto aparte", body:`De los 114 días activos en los proyectos de Terraform, tooling y Grafana, <strong>solo 36 son exclusivos</strong>: el resto coincide con días de trabajo en producto. No hay una fase «de infra» separada — el mismo día que tocaba una feature tocaba el nodepool, el secreto o el dashboard que esa feature necesitaba. Y ahí la propiedad es del <strong>66 % y el 88 %</strong>, frente al 25 % de Slidesgo.`}
+    ],
+    secStack: "Stack acreditado por el historial",
+    stackNote: "Tecnologías con trabajo real y mergeado detrás en uno o varios de estos proyectos — no una lista de familiaridad.",
+    stack: [
+      {h:"Backend y dominio", items:["PHP 7.4 → 8.3, Laravel 6 → 11","Arquitectura DDD (Domain / Application / Infrastructure)","Stripe + Cashier, fiscalidad multi-país","Horizon, colas, jobs y comandos de consola","MySQL: 69 migraciones entre los dos productos"]},
+      {h:"Frontend", items:["Vue 3 + Composition API, Vite","Editores de lienzo: SVG, geometría, transformaciones","Quill / rich text, undo-redo, snap y nudge","Alpine.js, Blade, Livewire, Tailwind","Cypress E2E"]},
+      {h:"Plataforma y operación", items:["GCP, Kubernetes, Istio, Helm, Cloud Build","<strong>Terraform</strong>: GKE, IAM, Secret Manager, balanceadores","KEDA para autoescalado de workers","Cloudflare, buckets GCS, CDN y caché","Docker y entornos locales fieles a producción"]},
+      {h:"Observabilidad", items:["OpenTelemetry y Cloud Trace en producción","Prometheus: exporters y métricas propias","<strong>Grafana</strong>: dashboards y provisioning como código","xhprof para profiling de PHP","Alertas de negocio sobre eventos de usuario"]},
+      {h:"IA aplicada", items:["Orquestación de LLM: OpenAI, GPT-5 mini","Generación de imagen: Flux, Seedream","Streaming con fallback a polling","Evaluación automatizada de calidad generativa","Generación de OOXML / PPTX y sus límites de memoria"]},
+      {h:"Automatización y DX", items:["41 comandos de consola para operaciones repetibles","Scripting en Bash + fzf: túneles, bastiones, rollback","Sincronización de BD entre entornos, dumps troceados","Acciones de Nova que dan autonomía a negocio y soporte","ProxySQL y conexión segura a producción con guardas"]}
+    ],
+    timeNote: `Todo lo siguiente se deriva de las marcas temporales de autoría. Un commit prueba que hubo trabajo
+      ese día; no mide horas exactas, ni el tiempo dedicado a revisiones de código, diseño, incidencias o
+      reuniones — que en un perfil senior es una parte sustancial del trabajo real.`,
+    timeTiles: [
+      {n:"947", k:"días con entrega de código", s:"de 1.763 días laborables del periodo"},
+      {n:"54<small>&nbsp;%</small>", k:"de los días laborables con código entregado", s:"el resto: revisiones, incidencias, diseño, vacaciones"},
+      {n:"98<small>&nbsp;%</small>", k:"de los commits entre las 8 y las 18h", s:"mediana a las 12h; nada después de las 22h"},
+      {n:"3", k:"sábados con commits en 7 años", s:"ningún domingo, en ninguno de los 7 proyectos"}
+    ],
+    secHow: "Cómo interpretar este documento",
+    disclaimer: `<p><strong>Sobre el «impacto en usuario».</strong> Estos proyectos contienen código, no analítica
+      de producto. Los bloques de impacto son <em>inferencias razonadas a partir de lo que el código hace</em>, no
+      métricas medidas de conversión, retención o ingresos. Para un uso externo — evaluación, entrevista,
+      promoción — conviene respaldarlas con los datos reales de Amplitude/GA4 o del panel de BI, especialmente en
+      pricing y en el AI Presentation Maker.</p>
+      <p><strong>Sobre las identidades.</strong> El trabajo aparece firmado con cuatro pares nombre/email
+      distintos. Cualquier análisis que use una sola identidad subestima el volumen real en unos 800 commits.</p>`,
+    footer: `<p><strong>Metodología.</strong> Cifras extraídas de los historiales Git de 7 repositorios el 27 de julio de
+      2026, agregando las <strong>cuatro identidades de autor</strong> con las que aparece firmado el trabajo (dos
+      cuentas de GitHub y dos direcciones de correo). Las Pull Requests se identifican por el sufijo
+      <span class="mono">(#NNNN)</span> de los commits de squash-merge en la rama principal. Las cifras de código
+      excluyen los <em>fixtures</em> de test cuando así se indica. Todo es reproducible sobre los repositorios
+      originales con <span class="mono">git log</span>, <span class="mono">--numstat</span> y filtros de autor.</p>
+      <p>Los nombres de repositorio y las rutas internas se han sustituido por los nombres de los proyectos. Los
+      números de Pull Request se conservan porque son la referencia verificable de cada aportación.</p>`
+  },
+  slidesgo: {
+    label: "Slidesgo",
+    hint: "monolito Laravel + Vue · plantillas y AI Presentation Maker",
+    eyebrow: "Producto principal",
+    path: "plantillas de presentación · IA generativa",
+    title: "Slidesgo",
+    lede: `Casi <strong>siete años</strong> de desarrollo continuo sobre el monolito de Slidesgo: desde el CMS de
+      plantillas y la capa de facturación, pasando por la migración completa a GCP/Kubernetes, hasta la
+      construcción del <strong>AI Presentation Maker</strong> — su pipeline de LLM, su generador de PPTX y su
+      editor visual en Vue&nbsp;3.`,
+    meta: ["Periodo: <strong>15 oct 2019 → 16 jul 2026</strong>", "82 meses · 6 años 9 meses", "Rol: owner técnico sucesivo de 3 dominios"],
+    tiles: [
+      {n:"3.398", k:"commits en total", s:"2.648 de ellos ya en <span class='mono'>master</span>"},
+      {n:"288", k:"Pull Requests mergeadas", s:"287 verificables en master"},
+      {n:"24,9<small>&nbsp;%</small>", k:"de todo el commit humano en master", s:"1.º de ~30 contribuidores (excl. Dependabot)"},
+      {n:"758", k:"días con entrega de código", s:"4,5 commits por día activo"},
+      {n:"4.780", k:"ficheros distintos tocados", s:"3.364 creados desde cero"},
+      {n:"+331k<small> / −155k</small>", k:"líneas de código en master", s:"+47k/−25k más en fixtures de test"},
+      {n:"65", k:"migraciones de base de datos", s:"esquema evolucionado sin downtime"},
+      {n:"41", k:"comandos de consola / jobs", s:"automatización y tooling operativo"},
+      {n:"80", k:"suites de test añadidas", s:"Unit · Feature · Integration"},
+      {n:"0", k:"commits en fin de semana", s:"entrega sostenida, no heroica"}
+    ],
+    tilesNote: `Métricas de <code>git log</code> agregando las cuatro identidades de autor
+      (dos cuentas de GitHub y dos direcciones de correo). Los datos de <em>master</em> reflejan trabajo ya
+      entregado a producción; los totales incluyen ramas de trabajo.`,
+    monthlyNote: "82 meses, oct 2019 – jul 2026. Cada barra es un mes; pasa el cursor para el detalle.",
+    commitsNote: "2026 cubre solo hasta julio y ya es el año más productivo.",
+    prsNote: "2022 cae a 7 PRs con 345 commits: año de ramas largas de infraestructura.",
+    churnNote: "Excluye fixtures de test. El pico de 2022 es la migración a GCP/Kubernetes; el de 2026, el editor visual y el pipeline de IA.",
+    partialMonth: "julio",
+    erasNote: "Etapas identificadas agrupando las 288 PRs mergeadas por dominio y fecha. El rol indicado describe el trabajo real de esa etapa, no un título formal.",
+    eras: [
+      {
+        title: "Fundamentos de plataforma y contenido",
+        when: "oct 2019 – dic 2020 · ~15 meses · 297 commits · 31 PRs",
+        role: "Backend Laravel · CMS · CDN",
+        bullets: [
+          "Puesta en marcha del <strong>panel de administración Nova</strong> (PR #35, primera contribución) como herramienta de gestión de contenido para el equipo editorial.",
+          "<strong>Sistema de publicación</strong> de plantillas reescrito (#559) y normalización del modelo de datos (#206, #210): base sobre la que sigue funcionando el catálogo.",
+          "Integración de <strong>Cloudflare</strong> (#102) e invalidación programática de assets y caché en cada deploy (#918, #996) — fin de los despliegues con caché sucia.",
+          "Histórico de búsquedas persistido (#85), base para recomendaciones y analítica de demanda.",
+          "<strong>Internacionalización</strong>: apertura del sitio en francés (#826, #832) y soporte de nuevos formatos y assets de slide (#686, #755).",
+          "Actualización a <strong>PHP 7.4</strong> (#142) manteniendo el producto en producción."
+        ],
+        impact: "catálogo publicable más rápido por parte del equipo de contenido, páginas servidas desde CDN sin purgas manuales, y un mercado nuevo (Francia) abierto a nivel de producto.",
+        tags: ["Laravel","Nova","Cloudflare CDN","MySQL migrations","i18n","PHP 7.4"]
+      },
+      {
+        title: "Monetización, fiscalidad y Business Intelligence",
+        when: "ene 2021 – dic 2021 · 12 meses · 534 commits · 40 PRs",
+        role: "Owner del dominio de pagos y suscripciones",
+        bullets: [
+          "<strong>Cumplimiento fiscal multi-jurisdicción</strong>: IVA UE y Reino Unido (#2007), estado y código postal para USA e India (#1666), IVA regional español incl. Canarias/Ceuta/Melilla (#2175), regulaciones de febrero (#2900). Trabajo de riesgo legal, no cosmético.",
+          "<strong>Upgrade de Laravel Cashier a v13</strong> (#2052) y reprogramación de suscripciones al final del ciclo de facturación (#1896) — cambio de semántica de cobro sin romper la base instalada.",
+          "Gestión de <strong>disputas de Stripe por webhook</strong> + comando de reconciliación (#1806), reporte de IDs de Stripe desconocidos (#1539), corrección de moneda en notas de crédito (#1417).",
+          "Construcción de la capa de <strong>Business Intelligence</strong> (#1408, #1726 réplica de descargas, #1649 ARPU, #2432 identificación de productos de equipo): <strong>40 de 52 commits</strong> del dominio <span class='mono'>BusinessIntelligence</span> son suyos.",
+          "Traducción legible de los eventos de Stripe dentro de Nova (#1839): soporte y finanzas dejan de necesitar a un ingeniero para entender un cobro.",
+          "Google <strong>One Tap</strong> (#1103), autenticación OAuth por <span class='mono'>auth_code</span> (#1347) y optimizaciones de contenido relacionado (#1825/#1826)."
+        ],
+        impact: "precios e impuestos correctos por país (menos disputas y menos fricción en checkout), recuperación de cobros fallidos, y decisiones de producto basadas en métricas reales de ARPU y descargas.",
+        tags: ["Stripe","Laravel Cashier","Tax compliance UE/UK/US/IN","Webhooks","BI / réplicas","OAuth"]
+      },
+      {
+        title: "Migración a GCP y Kubernetes",
+        when: "ene 2022 – dic 2022 · 12 meses · 345 commits · 7 PRs",
+        role: "Platform / DevOps engineer",
+        bullets: [
+          "<strong>Migración completa de la plataforma a Google Cloud</strong> (#2497): la PR de mayor calado estructural del historial. El año concentra <strong>+106.200 / −54.288 líneas</strong> — un 32&nbsp;% de todo el código añadido en siete años — en apenas 7 PRs, el patrón de una rama larga de infraestructura.",
+          "Migración del runtime a <strong>PHP-FPM</strong> con <strong>Cloud Trace</strong> y <strong>xhprof</strong> (#3518): observabilidad y profiling de producción donde antes había suposiciones.",
+          "<strong>Probes de readiness y liveness</strong> de Kubernetes como comandos de artisan (#3247): el orquestador deja de enviar tráfico a pods que aún no pueden servirlo.",
+          "Túneles a DB y Search Engine de GCP para desarrollo local (#2988) y comando de <strong>sincronización de bases de datos</strong> (#3356) — el entorno local pasa a parecerse a producción.",
+          "Propiedad sostenida del código de despliegue: <strong>337 de 522 commits</strong>, con <span class='mono'>cloudbuild.yaml</span> como el fichero más tocado de toda la trayectoria (70 veces)."
+        ],
+        impact: "escalado elástico y despliegues sin caída, menos incidencias de disponibilidad en picos de tráfico. Impacto invisible cuando funciona — que es exactamente el objetivo.",
+        tags: ["GCP","Kubernetes","Istio","Helm","Cloud Build","PHP-FPM","Cloud Trace","xhprof"]
+      },
+      {
+        title: "Modernización, growth y seguridad",
+        when: "ene 2023 – dic 2023 · 12 meses · 447 commits · 40 PRs",
+        role: "Full-stack senior · seguridad aplicada",
+        bullets: [
+          "<strong>Upgrades mayores en producción</strong>: PHP 8.2 (#3867) y Laravel 10 (#3970), con la deuda de compatibilidad resuelta en el mismo movimiento.",
+          "<strong>Vulnerabilidades reales corregidas</strong>: cadena de <em>Client-Side Path Traversal + cache poisoning → XSS almacenado en localStorage</em> (#3927), PDFs hechos privados (PRTS-401, #4361) y hardening de credenciales filtradas (#3844).",
+          "<strong>Motor de pricing experimental</strong>: test A/B de precios (#4404), campaña Q4 2023 con variantes por región LATAM y Asia (#4671, #4677), decimales variables por divisa con versionado de caché para evitar contaminación (#4407) y optimizaciones de caché de pricing (#4447).",
+          "<strong>SEO y Core Web Vitals</strong>: <span class='mono'>hreflang</span>/alternates (#4573), preload de imágenes de swiper y mejoras de CLS (#4204), indexación hasta página 50 con <span class='mono'>rel=prev/next</span> (#4946).",
+          "<strong>Vertical educativo</strong>: whitelist de dominios .edu (#4574), toolkits para profesores (#4345), habilitación de school en idiomas no ingleses (#4314).",
+          "<strong>Rebranding</strong> completo del producto (#4737) y cumplimiento de licencias de marca con reglas de Cloudflare por URL localizada (#4760)."
+        ],
+        impact: "datos personales y archivos protegidos frente a exfiltración; precios ajustados por poder adquisitivo regional; y páginas que cargan y posicionan mejor — el canal principal de adquisición de Slidesgo.",
+        tags: ["PHP 8.2","Laravel 10","AppSec / XSS / CSPT","A/B testing","SEO técnico","Core Web Vitals"]
+      },
+      {
+        title: "Frontend moderno, observabilidad y primeros productos de IA",
+        when: "ene 2024 – dic 2024 · 12 meses · 434 commits · 51 PRs",
+        role: "Full-stack · arquitectura frontend · IA aplicada",
+        bullets: [
+          "<strong>Migración a Vite y Vue 3</strong> (#5109): sustitución del pipeline de build heredado y salto a la Composition API — la base de todo el frontend posterior.",
+          "<strong>Observabilidad de extremo a extremo</strong>: instrumentación con <strong>OpenTelemetry</strong> (#4953), Cloud Trace en producción (#4945) y exporter de <strong>Prometheus</strong> con sus charts y servicios (#4993).",
+          "<strong>Rendimiento de entrega</strong>: assets publicados a bucket y servidos desde <span class='mono'>media.slidesgo.com</span> (#5401), políticas de <span class='mono'>Cache-Control</span> para usuarios no autenticados (#5378), 404 de estáticos resueltos en nginx (#5376), optimización de carga de media (#5023).",
+          "<strong>Login sin salto de red</strong>: datos de usuario extraídos del access token cifrado en lugar de una llamada HTTP a la Profile API (#5185) — una latencia menos en cada inicio de sesión.",
+          "<strong>Nacimiento de la suite de IA</strong>: <em>AI doc to presentation</em> (#5569), apertura pública de <em>PDF to PPT</em> (#5620), <em>Rewrite slide with AI</em> (#5721), edición de outline (#5689) y drag &amp; drop de documentos (#5746).",
+          "<strong>Rollout gobernado</strong>: Presentation Maker v1 tras feature flags (#5951) y v2 servido a un <strong>porcentaje del tráfico</strong> (#5957) — despliegue progresivo en lugar de big bang.",
+          "Además: rework de la landing de pricing (#5306), rework de intereses (#5350), refactor de topnav y menús (#5136, #5792, #5812), y un comando programado para purgar el almacenamiento de OpenAI y no agotar cuota (#5794)."
+        ],
+        impact: "primera vez que el usuario puede <em>generar</em> una presentación en lugar de solo descargarla; navegación más rápida por assets en CDN; y un producto de IA lanzado con red de seguridad (flags + % de tráfico) en lugar de a ciegas.",
+        tags: ["Vue 3","Vite","OpenTelemetry","Prometheus","OpenAI API","Feature flags","Progressive rollout"]
+      },
+      {
+        title: "AI Presentation Maker como producto",
+        when: "ene 2025 – dic 2025 · 12 meses · 614 commits · 32 PRs",
+        role: "Tech lead de facto del AI Presentation Maker",
+        bullets: [
+          "<strong>Reescritura del generador</strong> (#6052) y refactor del pipeline de PPTX (#6116): del prototipo a un sistema mantenible. <strong>188 de 362 commits</strong> del dominio <span class='mono'>AiPresentationMaker</span> son suyos.",
+          "<strong>Generación de imágenes</strong> integrada y mejorada (#6105) con modelo <strong>Flux</strong> (#6163) y callbacks asíncronos.",
+          "<strong>Escalado del backend de IA</strong>: autoescalado de workers con <strong>KEDA</strong> sobre Horizon (#6107), separación de colas por criticidad (#6224) y rework de concurrencia para mejorar la usabilidad percibida (#6559).",
+          "<strong>UX de latencia</strong>: respuestas de outline y contenido <strong>en streaming</strong> (#6315) con <em>fallback</em> automático a polling cuando el stream de OpenAI falla (#6404) — degradación elegante en vez de error.",
+          "<strong>Decisión de arquitectura de prompt</strong>: salida del LLM migrada de JSON a Markdown (#6520) y reemplazo multi-estilo de texto (#6706), reduciendo la fragilidad del parseo.",
+          "<strong>Funcionalidad de edición</strong>: regenerar, tono, undo/redo (#6247), escritura y edición de contenido de slide (#6262), adjuntos (#6456) y panel de ajustes (#6798).",
+          "<strong>Consolidación de producto</strong>: la herramienta <em>PDF to PPT</em> se sustituye por el Presentation Maker (#6560, #6561) — una superficie menos que mantener, un flujo mejor para el usuario.",
+          "<strong>Refactor de la capa de infraestructura</strong> (#6523) y traducciones movidas al propio código con espera al job asíncrono de Lokalise (#6368, #6365)."
+        ],
+        impact: "el generador responde palabra a palabra en lugar de tras una espera opaca, aguanta picos de demanda sin colas paradas, y falla de forma recuperable. Es la etapa donde el AI Presentation Maker deja de ser un experimento y se convierte en la propuesta de valor de Slidesgo.",
+        tags: ["LLM orchestration","Streaming / SSE","KEDA HPA","Laravel Horizon","Flux (img-gen)","PhpPresentation","Prompt engineering","Lokalise"]
+      },
+      {
+        title: "Editor visual, calidad generativa y hardening",
+        when: "ene 2026 – jul 2026 · 7 meses · 727 commits · 86 PRs",
+        role: "Tech lead · el año más productivo del historial",
+        bullets: [
+          "<strong>Editor visual real</strong>: refactor de las slides a un modelo de <span class='mono'>elements[]</span> con cajas de texto ricas editables (#7536), toolbar contextual sobre Quill (#7634, #7568), <strong>snap magnético y nudge con flechas</strong> (#7641), selector de color con pegado de HEX (#7640), interlineado y arreglos de UI móvil (#7595).",
+          "<strong>Layouts visuales y personalizados</strong>: sistema de <em>custom layouts</em> (#6950, #7453) y prerelease de <em>visual layouts</em> (#7264, #7324) con propiedades de diseño y persistencia de la geometría por imagen de extremo a extremo (#7639).",
+          "<strong>Calidad generativa medible</strong>: evaluación de la librería completa dirigida por IA (#7145), comandos de <span class='mono'>ai:prepare</span> / <span class='mono'>ai:evaluate</span> / validador iterados en ~8 PRs (#7429→#7434), y reporte explícito de lo no corregible (#7416). Convierte «el output se ve raro» en una métrica.",
+          "<strong>Ingeniería de rendimiento en PPTX</strong>: carga parcial de PPTX en PhpPresentation (#7439) y optimizaciones de memoria (#7450) — trabajo de bajo nivel sobre una librería de terceros para que quepa en el presupuesto del contenedor.",
+          "<strong>Seguridad ofensiva-defensiva</strong>: mitigación de <strong>SSRF</strong> (#7339), prevención de <strong>path traversal</strong> en la generación de imágenes (#7352), control de acceso al maker vía Policies (#7349), exclusión de hosts internos en el callback de IQS (#7355) y corrección de atribución maliciosa de usuario (#7403).",
+          "<strong>Iteración de modelos y prompts</strong>: prompts para GPT-5 mini (#7295), <em>Seedream 4.5</em> activado por defecto para premium (#7329), resolución por modelo (#7337) y el <em>LLM rework</em> más reciente (#7761).",
+          "<strong>Rendimiento de arranque del frontend</strong>: boot data cargado en <em>lazy</em> vía <span class='mono'>/manifest</span> + <span class='mono'>/bootstrap</span> (#7647) y después <strong>horneado en el bundle de Vite</strong> (#7675) para eliminar la caducidad de caché en despliegues progresivos.",
+          "<strong>Trazabilidad y negocio</strong>: UUID de presentación estampado en los metadatos OPC del .pptx para provenance (#7667), alertas de negocio sobre descargas de PPTX (#7278), métricas de generación e imágenes (#7331, #7332) y métricas Prometheus del Search Engine (#7731).",
+          "<strong>Herramientas internas</strong>: acciones de Nova para lanzar <span class='mono'>ai:prepare</span> y <span class='mono'>ai:evaluate</span> (#7455, #7457), previews de custom layout (#7291), enlace directo a la presentación del usuario (#7326) y banner de acceso de staff a presentaciones ajenas (#7574)."
+        ],
+        impact: "el usuario deja de recibir un resultado inmutable y empieza a <em>editar</em> su presentación en el navegador; la calidad del output se mide y corrige de forma sistemática; y el arranque de la app deja de depender de una petición extra vulnerable a caché obsoleta.",
+        tags: ["Vue 3 composables","Quill / rich text","OOXML / OPC","PhpPresentation","GPT-5 · Seedream","LLM evaluation","SSRF / path traversal","Laravel Policies"]
+      }
+    ],
+    strategiesNote: "Patrones que aparecen de forma repetida en las 288 PRs — no técnicas usadas una vez, sino criterios sostenidos a lo largo de años.",
+    strategies: [
+      {h:"Despliegue progresivo por defecto", items:["Feature flags antes de exponer producto nuevo","Rollout por porcentaje de tráfico, no big bang","Cookie de <span class='mono'>debug</span> y banners de staff para validar en producción","Rutas de <em>fallback</em> cuando el camino nuevo falla"], ev:"#5951, #5957, #7347, #7574, #6404"},
+      {h:"Arquitectura DDD por capas", items:["Lógica de negocio en <span class='mono'>Domain/</span> con Actions y DTOs","Laravel confinado a <span class='mono'>Application/</span>","Refactors explícitos de la capa de infraestructura","Modelos de datos (<span class='mono'>elements[]</span>) antes que parches de vista"], ev:"#6523, #7536, #6116, 65 migraciones"},
+      {h:"Observabilidad como requisito, no extra", items:["OpenTelemetry, Cloud Trace y xhprof en producción","Exporters y métricas Prometheus propias","Alertas de negocio sobre eventos reales de usuario","Logging dirigido en los puntos ciegos del pipeline de IA"], ev:"#4953, #4945, #4993, #7278, #7332, #7731"},
+      {h:"Rendimiento medido en el borde", items:["Assets a bucket + dominio de media dedicado","Cache-Control diferenciado por autenticación","CLS, preload de imágenes y Core Web Vitals","Boot data horneado en el bundle para matar la caché obsoleta"], ev:"#5401, #5378, #4204, #5425, #7647, #7675"},
+      {h:"Seguridad aplicada, no auditada de lejos", items:["Cadena CSPT + cache poisoning → XSS, corregida","SSRF y path traversal en generación de imágenes","Autorización vía Policies en lugar de checks dispersos","Ficheros privados y hardening de credenciales"], ev:"#3927, #7339, #7352, #7349, #4361, #3844"},
+      {h:"Ingeniería de LLM con criterio de producto", items:["Salida en Markdown en lugar de JSON frágil","Streaming con degradación a polling","Evaluación automatizada de toda la librería","Elección de modelo y resolución por segmento de usuario"], ev:"#6520, #6315, #6404, #7145, #7329, #7337, #7761"},
+      {h:"Escalado del trabajo asíncrono", items:["Autoescalado de workers con KEDA sobre Horizon","Colas separadas por criticidad","Timeouts y concurrencia ajustados a la realidad del proveedor","Purga programada de almacenamiento externo para no agotar cuota"], ev:"#6107, #6224, #6559, #7229, #7167, #5794"},
+      {h:"Herramientas para el equipo", items:["41 comandos de consola para operaciones repetibles","Acciones de Nova que dan a negocio y soporte autonomía","Túneles y sincronización de DB para desarrollo local fiel","Eventos de Stripe traducidos a lenguaje humano"], ev:"#7455, #7457, #7291, #2988, #3356, #1839"}
+    ],
+    timeTiles: [
+      {n:"82 <small>meses</small>", k:"de presencia continua en el proyecto", s:"sin ningún hueco superior a 3 meses"},
+      {n:"≈3,4 <small>años-persona</small>", k:"de días con entrega efectiva de código", s:"758 días / 220 laborables por año"},
+      {n:"43<small>&nbsp;%</small>", k:"de los días laborables del periodo", s:"el resto: revisiones, otros proyectos, incidencias, vacaciones"},
+      {n:"98<small>&nbsp;%</small>", k:"de los commits entre las 8 y las 18h", s:"mediana a las 12h; nada después de las 22h"}
+    ],
+    callouts: [
+      {h:"Dos lecturas honestas de estos números", ps:[
+        "<strong>2022 es el año engañoso.</strong> Solo 7 PRs, pero 345 commits y un tercio de todo el código añadido en siete años. No es un año flojo: es una migración de plataforma desarrollada en ramas de larga duración. Contar PRs sin mirar la magnitud del cambio invierte la conclusión.",
+        "<strong>2026 es el año más denso, y no ha terminado.</strong> 727 commits y 86 PRs en siete meses — más PRs que en cualquier año completo anterior — sobre el producto de mayor valor estratégico. La tendencia de los últimos 18 meses es de aceleración, no de meseta.",
+        "<strong>Cero commits en fin de semana</strong> en 758 días activos, con la actividad concentrada en horario laboral. La productividad de este historial no proviene de horas extra."
+      ]}
+    ],
+    profileTitle: "Perfil que describe este historial",
+    profile: `<p>Un ingeniero <strong>full-stack con centro de gravedad en backend y plataforma</strong> que ha ejercido
+      como <em>owner</em> técnico de tres dominios sucesivos y críticos del negocio: primero <strong>pagos,
+      suscripciones y fiscalidad</strong>; después la <strong>infraestructura</strong> (GCP, Kubernetes,
+      observabilidad, CI/CD); y en los últimos dos años el <strong>AI Presentation Maker</strong> completo —
+      pipeline de LLM, generación de imágenes, construcción de OOXML y editor visual en Vue 3.</p>
+      <p>El patrón que se repite es el de alguien que <strong>lleva una funcionalidad de punta a punta</strong>:
+      migración de datos, dominio, API, frontend, despliegue, métricas y herramientas internas para que el resto
+      del equipo pueda operarla. Aparecen también rasgos que no suelen coincidir en la misma persona:
+      cumplimiento fiscal multi-país, corrección de vulnerabilidades encadenadas, ingeniería de rendimiento
+      dentro de una librería de terceros, y prompt/model engineering con evaluación automatizada.</p>`
+  },
+  wepik: {
+    label: "Wepik",
+    hint: "editor gráfico online · Laravel + Vue + renderer",
+    eyebrow: "Segundo producto",
+    path: "editor de diseño gráfico online",
+    title: "Wepik · editor gráfico online",
+    lede: `Contribución <strong>especializada y por oleadas</strong> al editor de diseño de Freepik: primero las
+      herramientas de manipulación directa del lienzo (recorte, reemplazo, color), después el subsistema de
+      historial y las integraciones de almacenamiento, y en 2022 la <strong>migración a GCP y el renderizado
+      asíncrono</strong> del servicio de exportación.`,
+    meta: ["Periodo: <strong>29 ene 2020 → 16 jun 2026</strong>", "77 meses de calendario · 3 oleadas reales", "Rol: contribuidor especializado, no owner"],
+    tiles: [
+      {n:"657", k:"commits en total", s:"653 de ellos en <span class='mono'>master</span>"},
+      {n:"48", k:"Pull Requests mergeadas", s:"18 en 2020 · 13 en 2021 · 13 en 2022"},
+      {n:"3,3<small>&nbsp;%</small>", k:"del commit humano en master", s:"proyecto de 30+ personas y 21.392 commits"},
+      {n:"220", k:"días con entrega de código", s:"3,0 commits por día activo"},
+      {n:"749", k:"ficheros distintos tocados", s:"378 creados desde cero"},
+      {n:"+50k<small> / −37k</small>", k:"líneas movidas en master", s:"el 69 % de ellas en 2022"},
+      {n:"576", k:"ediciones de componentes <span class='mono'>.vue</span>", s:"Editor.vue y Crop.vue a la cabeza"},
+      {n:"179", k:"toques a la suite Cypress", s:"E2E del editor"},
+      {n:"26<small>&nbsp;%</small>", k:"de los commits de infraestructura", s:"133 de 510 — la zona de mayor propiedad"},
+      {n:"271", k:"días de pausa máxima", s:"dedicación desplazada a Slidesgo"}
+    ],
+    tilesNote: `Mismas cuatro identidades de autor. Este proyecto muestra un patrón muy distinto al de
+      Slidesgo: no es presencia continua, son <strong>tres oleadas de trabajo intenso</strong> (2020, 2021, 2022)
+      seguidas de intervenciones puntuales muy específicas.`,
+    monthlyNote: "77 meses, ene 2020 – jun 2026. Los huecos son reales: meses sin ningún commit en este proyecto.",
+    commitsNote: "Tres oleadas nítidas: 2020 (canvas), 2021 (precisión e integraciones), 2022 (plataforma).",
+    prsNote: "2023 y 2025 sin ninguna PR: la dedicación estaba en Slidesgo.",
+    churnNote: "2022 concentra el 69 % de todo el código movido aquí: migración a GCP, Istio y renderer asíncrono.",
+    partialMonth: "junio",
+    erasNote: "Etapas identificadas agrupando las 48 PRs mergeadas por dominio y fecha. El rol indicado describe el trabajo real de esa etapa, no un título formal.",
+    eras: [
+      {
+        title: "El lienzo: recorte, color y manipulación directa",
+        when: "ene 2020 – dic 2020 · 12 meses · 281 commits · 18 PRs",
+        role: "Frontend de editor gráfico (Vue) + backend Laravel",
+        bullets: [
+          "<strong>Herramienta de recorte de imágenes</strong> desarrollada en dos iteraciones completas (#332, #370) y mantenida después con indicador de carga y mejor manejo de eventos (#808, #1073) — una de las interacciones más delicadas de cualquier editor de lienzo.",
+          "<strong>Copy on cursor</strong> (#307) y <strong>reemplazo de imagen</strong> conservando el encuadre (#676): dos gestos que el usuario repite decenas de veces por diseño.",
+          "<strong>Colores globales</strong> del documento (#800): recolorear un diseño completo de una sola vez en lugar de elemento por elemento.",
+          "Corrección de <strong>SVG inválido</strong> y envío de las fuentes al backend como data (#528) — el punto donde el render del servidor deja de divergir del que ve el usuario en el navegador.",
+          "<strong>Refactor del sistema de usuarios</strong> y del login dentro del editor (#558, #631, #656, #657): avatar y modal de cuenta sin sacar al usuario del lienzo.",
+          "<strong>UUID de diseño y prevención de descargas de plantillas sin modificar</strong> (#567): una decisión de producto, no técnica, implementada en el modelo de datos.",
+          "Mantenimiento de dependencias críticas: cliente de Flaticon refactorizado (#1169) y Spatie MediaLibrary llevado a v9 (#1162)."
+        ],
+        impact: "recortar, reemplazar y recolorear son la mayor parte del uso real de un editor gráfico. Es la etapa en la que esas herramientas se construyeron y se estabilizaron.",
+        tags: ["Vue","Canvas / SVG","subjx","Laravel","Spatie MediaLibrary","Flaticon API"]
+      },
+      {
+        title: "Precisión, historial e integraciones de almacenamiento",
+        when: "ene 2021 – dic 2021 · 12 meses · 94 commits · 13 PRs",
+        role: "Frontend de editor · integraciones de terceros",
+        bullets: [
+          "<strong>History manager</strong> (undo/redo) reparado parcialmente (#2853): el subsistema más propenso a errores de cualquier editor, y el que más frustra cuando falla.",
+          "<strong>Sombra de texto</strong> (#2903) y corrección del texto que se desplazaba al hacer scroll (#2927).",
+          "<strong>Selector de páginas en la descarga</strong> (#2951): exportar solo lo que interesa de un documento largo.",
+          "Resolución del artboard A3 acotada para no exceder 4K (#2107) — límite de render decidido conscientemente en lugar de un fallo en producción.",
+          "<strong>Integración con Dropbox</strong> (#1926) y subida múltiple de archivos con arreglo del modal de reemplazo (#1774): los assets del usuario entran desde donde ya los tiene.",
+          "<strong>Hotfix de spam sobre un endpoint</strong> (#2835) y corrección de hovers en imágenes recortadas (#3005)."
+        ],
+        impact: "menos trabajo perdido por un undo poco fiable, descargas parciales de documentos largos, y menos fricción para traer material propio al editor.",
+        tags: ["Undo/redo","Dropbox API","Uploads múltiples","Límites de render","Hotfix en producción"]
+      },
+      {
+        title: "Migración a GCP y renderizado asíncrono",
+        when: "feb 2022 – dic 2022 · 11 meses · 237 commits · 13 PRs",
+        role: "Platform engineer del editor",
+        bullets: [
+          "<strong>Migración del editor a Google Cloud</strong> (#3493), con <strong>Istio</strong> en preproducción y producción (#3710, #3883), renombrado de imágenes Docker (#3715) y corrección del entorno de pre (#3879).",
+          "<strong>Renderer asíncrono</strong> (#3671) y <strong>render de imágenes con Electron</strong> (#3647), después llevado a <strong>Cloud Render</strong> (#4061): la exportación sale del request del usuario y se convierte en un servicio que escala por su cuenta.",
+          "<strong>Buckets de GCS</strong> para assets y para el <span class='mono'>dist</span> del frontend (#3241, #4075) y <span class='mono'>sys_tmpdir</span> correcto dentro del contenedor (#3498).",
+          "<strong>Túnel a la base de datos y comando syncdb</strong> para desarrollo local (#4166) — la misma herramienta que construyó ese año en Slidesgo, replicada aquí.",
+          "<strong>Logs para BI</strong> (#4810): el editor empieza a reportar lo que hace el usuario a la capa analítica.",
+          "El año concentra <strong>+34.875 / −29.532 líneas</strong>, el 69 % de todo el código que ha movido en este proyecto."
+        ],
+        impact: "exportaciones que no bloquean la interfaz ni mueren por timeout, y una plataforma que absorbe picos de demanda sin intervención manual.",
+        tags: ["GCP","Istio","Electron","Cloud Render","GCS","Docker","Cloud Build"]
+      },
+      {
+        title: "Seguridad, CI/CD y mantenimiento puntual",
+        when: "ene 2023 – jun 2026 · 45 commits · 4 PRs",
+        role: "Intervenciones especializadas a demanda",
+        bullets: [
+          "<strong>Esfuerzos anti-phishing</strong> (#9687): un editor público es un vector natural de suplantación de marca, y ese riesgo se cerró explícitamente.",
+          "<strong>Despliegue en tres pasos</strong> con la pipeline de Cypress disparada en postdeploy (#9574) y propagación correcta de los <em>exit status</em> de <span class='mono'>yarn build</span> (#10523) — un build que fallaba en silencio deja de hacerlo.",
+          "<strong>CSP</strong> ampliada a <span class='mono'>*.magnific.com</span> (#11183), integrando el producto de IA de imagen dentro del editor.",
+          "Contribución sostenida a la suite E2E: 179 toques a Cypress a lo largo del proyecto."
+        ],
+        impact: "menos despliegues rotos llegando a producción y una superficie de phishing cerrada antes de que fuera un incidente.",
+        tags: ["CSP","Anti-phishing","Cypress E2E","Cloud Build","Hardening"]
+      }
+    ],
+    strategiesNote: "Con 48 PRs el patrón es más estrecho que en Slidesgo, pero muy definido: manipulación directa en el lienzo y plataforma de render.",
+    strategies: [
+      {h:"Manipulación directa en el lienzo", items:["Recorte, transformación y reemplazo de imagen","Colores globales a nivel de documento","Gestos repetitivos optimizados (copy on cursor)","Corrección de hovers y coordenadas tras transformar"], ev:"#332, #370, #808, #1073, #800, #307, #3005"},
+      {h:"Render fuera del request", items:["Renderer asíncrono desacoplado de la petición","Render de imágenes con Electron","Migración a Cloud Render","Límites de resolución decididos, no descubiertos"], ev:"#3671, #3647, #4061, #2107"},
+      {h:"Migración de plataforma replicable", items:["GCP + Istio en pre y producción","Buckets de GCS para assets y dist","Túnel a DB + syncdb, idéntico al de Slidesgo","Imágenes Docker normalizadas"], ev:"#3493, #3710, #3883, #3241, #4075, #4166"},
+      {h:"Seguridad de una superficie pública", items:["CSP explícita por dominio integrado","Anti-phishing sobre contenido de usuario","Prevención de descarga de plantillas sin modificar","Hotfix de abuso de endpoint"], ev:"#11183, #9687, #567, #2835"}
+    ],
+    timeTiles: [
+      {n:"3 <small>oleadas</small>", k:"de trabajo concentrado", s:"2020 canvas · 2021 precisión · 2022 plataforma"},
+      {n:"≈1,0 <small>años-persona</small>", k:"de días con entrega efectiva", s:"220 días / 220 laborables por año"},
+      {n:"3", k:"sábados con commits", s:"en 220 días activos; ningún domingo"},
+      {n:"98<small>&nbsp;%</small>", k:"de los commits entre las 8 y las 18h", s:"mismo patrón horario que en Slidesgo"}
+    ],
+    callouts: [
+      {h:"Cómo hay que leer este proyecto", ps:[
+        "<strong>Aquí el perfil es de especialista invitado, no de owner.</strong> 3,3&nbsp;% del commit humano en un proyecto con 30+ contribuidores. Reclamar propiedad del editor sería falso; lo defendible es la propiedad de <em>zonas concretas</em>: la herramienta de recorte, el renderer asíncrono y el 26&nbsp;% de los commits de infraestructura.",
+        "<strong>Los huecos no son inactividad, son reasignación.</strong> La pausa de 271 días y los años 2023 y 2025 casi vacíos coinciden con las etapas de mayor intensidad en Slidesgo. Vistos por separado parecen abandono; vistos juntos son dedicación desplazada."
+      ]}
+    ],
+    profileTitle: "Qué demuestra esta contribución",
+    profile: `<p>Dos capacidades que el proyecto de Slidesgo no puede evidenciar por sí solo. La primera es
+      <strong>frontend gráfico de manipulación directa</strong>: recorte, transformaciones, coordenadas,
+      historial de cambios y sincronía entre el render del navegador y el del servidor. Es un tipo de problema
+      —geométrico, con estado y muy sensible a la percepción del usuario— distinto del CRUD y del pipeline de
+      datos.</p>
+      <p>La segunda es que la <strong>migración a GCP de 2022 no fue un caso aislado</strong>: se ejecutó en dos
+      productos distintos el mismo año, con las mismas herramientas (Istio, buckets, túnel de DB, syncdb). Eso
+      convierte la migración de Slidesgo en un patrón replicado, no en un acierto puntual.</p>`
+  },
+  otros: {
+    label: "Otros",
+    hint: "infraestructura, tooling y contribuciones puntuales",
+    eyebrow: "5 proyectos internos · infraestructura, tooling y contribuciones puntuales",
+    title: "Otros proyectos",
+    lede: `184 commits repartidos en cinco proyectos que no son producto pero sostienen el producto: la
+      <strong>infraestructura declarada en Terraform</strong>, las <strong>herramientas con las que el equipo se
+      conecta a ella</strong>, los <strong>dashboards</strong> donde se leen sus métricas, y una contribución de
+      cinco commits en el API central de pagos que desbloquea un experimento entero.`,
+    meta: ["Periodo: <strong>3 ago 2021 → 21 may 2026</strong>", "114 días activos · 36 de ellos exclusivos", "Owner mayoritario en 2 de los 5"],
+    tiles: [
+      {n:"184", k:"commits en 5 proyectos", s:"casi todos directos a <span class='mono'>master</span>"},
+      {n:"88<small>&nbsp;%</small>", k:"del proyecto de tooling del equipo", s:"43 de 49 commits, incluido el <span class='mono'>init</span>"},
+      {n:"66<small>&nbsp;%</small>", k:"del proyecto de Terraform", s:"109 de 164 commits"},
+      {n:"+38k<small> / −33k</small>", k:"líneas movidas", s:"314 ficheros creados desde cero"},
+      {n:"246", k:"ediciones de ficheros <span class='mono'>.tf</span>", s:"infraestructura como código, no manual"},
+      {n:"36", k:"días exclusivos de estos proyectos", s:"de 114 — el resto coincide con días de producto"}
+    ],
+    tilesNote: `Ninguno de estos proyectos usa Pull Requests de forma sistemática (solo 2 en total): el trabajo
+      va directo a <span class="mono">master</span>, así que aquí la unidad de análisis es el commit y no la PR.`,
+    figByRepo: "Commits por proyecto",
+    byRepoNote: "El volumen no dice quién manda: los dos proyectos más pequeños son los que más le pertenecen.",
+    byRepoLabels: ["Terraform Slidesgo","Tooling","Provisioning Grafana","Dashboards Grafana","API central de pagos"],
+    byRepoNatures: ["infraestructura como código","herramientas del equipo","despliegue de dashboards","observabilidad","sistema de otro equipo"],
+    yearNote: "Actividad continua de fondo entre 2021 y 2026, nunca dominante.",
+    partialMonth: "mayo",
+    secBlocks: "Los proyectos, uno a uno",
+    blocksNote: "Ordenados por peso real de la contribución, no por número de commits.",
+    blocks: [
+      {
+        title: "Infraestructura como código de Slidesgo y Wepik",
+        repo: "Terraform Slidesgo",
+        when: "ago 2021 – ene 2026 · 109 commits · 72 días activos · +32.005 / −26.113 líneas",
+        role: "Owner de la infraestructura declarativa · 66 % del proyecto",
+        bullets: [
+          "Definición en Terraform del <strong>cluster GKE que sirve ambos productos</strong>: versiones, addons (driver CSI de discos persistentes), <em>workload identity federation</em> y nodepools dimensionados según carga real — <span class='mono'>n2d-highcpu-8</span> ↔ <span class='mono'>16</span>, escalado de 8 a 16 CPU en marzo de 2024, máximo elevado a 12 nodos por zona.",
+          "<strong>IAM de mínimo privilegio, no el de por defecto</strong>: rol custom para el SA de certbot (PRTS-396) y otro para el SA de Secret Manager del cluster, creado específicamente para <em>listar</em> secretos y no acabar leyendo un <span class='mono'>latest</span> deshabilitado. Permisos concedidos por grupo y por entorno: k8s developer, monitoring editor, cloudtrace admin, secret accessor separado en pre y pro.",
+          "<strong>Secret Manager como fuente única</strong>: secretos de CI/CD (Lokalise, POEditor, <span class='mono'>auth.json</span> de Composer, <span class='mono'>.env</span> de desarrollo) condicionados por entorno, con borrado explícito de los que dejan de usarse.",
+          "<strong>Balanceadores y NEGs</strong>: LB de Wepik con host override para Cloudflare, url rewrite, cabeceras <span class='mono'>x-proxied</span> / <span class='mono'>x-forwarded-for</span> y timeout de backend subido a 100 s coordinado con el equipo de Wepik. Incluye una reversión honesta y documentada: el <span class='mono'>x-forwarded-for</span> se movió a Cloudflare al detectar que reportaba la IP de CF en lugar de la del usuario.",
+          "<strong>Sinks de logging afinados</strong>: exclusión de <span class='mono'>/healthz</span> de los sinks de BI (ruido que contaminaba las métricas), autorización de los 500 del LB en Cloud Logging y bucket de logs de aplicación alimentado desde el sink de GKE de producción.",
+          "<strong>Ventana de mantenimiento de Redis alineada con Cloud SQL</strong>: un solo corte coincidente en lugar de dos degradaciones en momentos distintos.",
+          "Upgrade de Terraform a <span class='mono'>^1.3</span> retirando el módulo experimental por defecto, más reorganización de variables y ficheros para parametrizar pre y pro desde el mismo código."
+        ],
+        impact: "es el fichero de verdad de la infraestructura que sirve a los dos productos: quien cambia un nodepool, un secreto o un balanceador pasa por aquí. El trabajo de IAM granular es, además, la diferencia entre una brecha contenida y una total.",
+        tags: ["Terraform","GKE","IAM / least privilege","Secret Manager","Cloud LB / NEG","Cloud Logging","Cloud SQL","Redis"]
+      },
+      {
+        title: "Herramientas de desarrollo del equipo",
+        repo: "Tooling",
+        when: "dic 2022 – may 2026 · 43 commits · 30 días activos",
+        role: "Creador y mantenedor · 88 % del proyecto, incluido el commit inicial",
+        bullets: [
+          "Creó el proyecto (<span class='mono'>init</span>, diciembre de 2022) y firma el 88 % de su historia: es <em>la</em> caja de herramientas con la que el equipo se conecta a la infraestructura.",
+          "<strong>Conexión a clusters y bastiones</strong>: <span class='mono'>tunnel.sh</span>, <span class='mono'>cluster.sh</span> y una utilidad de bastión con <strong>fzf</strong> para elegir destino de forma interactiva, parametrización del cluster principal, terminal que se mantiene abierta y salida limpia con Ctrl+C.",
+          "<strong>syncdb / synctables</strong>: sincronización de bases de datos entre entornos con tablas solo-esquema, volcado <span class='mono'>--dump</span> a fichero, <span class='mono'>--no-tablespaces</span>, filtrado de <span class='mono'>model_type</span> en la tabla de media y, lo más fino, <span class='mono'>--chunk</span> para <strong>importar dumps troceados</strong> en tablas con clave primaria entera autoincremental.",
+          "<strong>Rangos de puertos reasignados para evitar colisiones</strong> entre el sandbox en desarrollo y otros proyectos — el mismo problema que resolvería después con los worktrees de Slidesgo.",
+          "<strong>Guardas contra el error humano</strong>: aviso al conectar a producción, comparación <em>case-sensitive</em> del origin de git, priorización de validaciones en el script de rollback y despliegues en preproducción con override de <span class='mono'>commitSHA</span> y variables de entorno.",
+          "Script de <strong>rollback de despliegues</strong>, actualizado tras la migración de la organización de GitHub de la compañía, y arreglo de las conexiones vía ProxySQL."
+        ],
+        impact: "cada minuto que el equipo no pierde levantando un túnel, sincronizando una base de datos o revirtiendo un despliegue sale de aquí. Es trabajo de multiplicador: no se ve en el producto, se ve en la velocidad de los demás.",
+        tags: ["Bash","fzf","GKE","ProxySQL","MySQL dumps","DX / tooling","Rollback"]
+      },
+      {
+        title: "Observabilidad operativa",
+        repo: "Dashboards Grafana · Provisioning Grafana",
+        when: "feb 2024 – mar 2026 · 27 commits en 2 proyectos",
+        role: "Dashboards de producción de Slidesgo",
+        bullets: [
+          "<strong>Migración del dashboard antiguo</strong> de Grafana con el datasource de Prometheus parametrizado (PR #20, febrero de 2024): cierra el círculo del exporter de Prometheus que había construido en Slidesgo semanas antes.",
+          "<strong>Dashboard de Horizon de Slidesgo</strong> — estado de colas y workers — creado y corregido en dos rondas (febrero de 2025). Es el panel que se mira cuando el pipeline de IA se atasca.",
+          "<strong>Limpieza del provisioning</strong> (marzo de 2026): <span class='mono'>clean up dashboards and fix broken datasource refs</span>, con un balance de <strong>+1.053 / −6.665 líneas</strong>. Borrar 5.600 líneas de dashboards muertos y referencias rotas es mantenimiento que nadie reclama y todo el mundo agradece.",
+          "El resto son commits de generación automática del pipeline de provisión (<span class='mono'>Generation: N</span>), que documentan la cadencia real de despliegue de dashboards durante 2025."
+        ],
+        impact: "las métricas que instrumentó en el producto se leen en paneles que también mantiene. Instrumentar sin dashboard es telemetría que nadie mira.",
+        tags: ["Grafana","Prometheus","Laravel Horizon","Provisioning as code"]
+      },
+      {
+        title: "Cinco commits que desbloquean un experimento entero",
+        repo: "API central de pagos",
+        when: "11 – 17 ago 2023 · 5 commits · 1 PR (#538)",
+        role: "Contribución puntual en el sistema central de otro equipo",
+        bullets: [
+          "<span class='mono'>feat(events)</span>: añade el valor del <strong>test A/B al evento <span class='mono'>SubscriptionsCreatedEvent</span></strong> del API central de pagos de la compañía, con sus tests de <span class='mono'>quantity</span> y de evento.",
+          "El contexto lo explica todo: ese mismo agosto de 2023 estaba lanzando el <strong>test A/B de pricing en Slidesgo</strong> (#4404). Sin la variante viajando dentro del evento central de suscripción creada <strong>no hay forma de atribuir ingresos a cada variante</strong> — el experimento existe, pero no se puede medir.",
+          "5 commits en un proyecto de 12.068 commits: la huella es mínima y la dependencia, total."
+        ],
+        impact: "es el ejemplo más claro de contribución mínima con dependencia crítica: entrar en el proyecto de otro equipo, hacer el cambio pequeño con sus tests, y convertir un experimento de pricing en un experimento medible.",
+        tags: ["Eventos de dominio","Pagos","A/B testing","PHPUnit"]
+      }
+    ],
+    secCallouts: "Cómo leer estas cifras",
+    callouts: [
+      {h:"Por qué estos 184 commits pesan más que su tamaño", ps:[
+        `<strong>Solo 36 de los 114 días activos son exclusivos de estos proyectos.</strong> El resto coincide con días
+        de trabajo en Slidesgo o Wepik: la infraestructura no era un proyecto aparte al que dedicar semanas, se
+        tocaba el mismo día que el producto que la necesitaba.`,
+        `<strong>Y aquí la propiedad es mayor que en los productos grandes.</strong> 66 % del proyecto de Terraform y
+        88 % del de tooling, frente al 25 % de Slidesgo. El peso de una contribución no se mide en volumen
+        absoluto: en dos de estos proyectos, si él no lo hizo, no existe.`
+      ]}
+    ],
+    profileTitle: "Qué añaden estos proyectos",
+    profile: `<p>La capa que los otros dos no pueden evidenciar por sí solos. La infraestructura de Slidesgo y
+      Wepik no solo se migró a GCP en 2022: se mantiene <strong>declarada en Terraform</strong> por la misma
+      persona durante los cuatro años siguientes, con IAM granular, gestión de secretos y balanceadores incluidos.
+      Las <strong>herramientas con las que el equipo opera esa infraestructura</strong> las escribió él —y es dueño
+      del 88 % de ese proyecto—. Los <strong>dashboards</strong> donde se leen las métricas que instrumentó,
+      también.</p>
+      <p>Es el ciclo completo cerrado por una sola persona: <em>declarar la infraestructura → desplegar →
+      instrumentar → observar → dar herramientas al resto del equipo</em>. Y la contribución al API central de
+      pagos demuestra la otra mitad del oficio: saber entrar en el proyecto de otro equipo, hacer el cambio
+      mínimo con tests, y salir.</p>`
+  }
+},
+en: {
+  htmlLang: "en",
+  locale: "en-US",
+  months: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+  brandName: "Technical Portfolio · Jon Sánchez Martín",
+  brandWho: "Git history analysis · data as of Jul 27, 2026",
+  tabAria: "Projects",
+  langAria: "Language",
+  ui: {
+    tableToggle: "View as table",
+    yearTableToggle: "View yearly data as table",
+    peaks: "Peaks",
+    partialPrefix: "* year in progress, data through",
+    secFigures: "By the numbers",
+    secActivity: "Activity over time",
+    secActivityNote: "Three views of the same history: monthly volume (the real pulse of the work), PRs shipped per year (the unit of merged value) and lines moved per year (the magnitude of structural change).",
+    figMonths: "Commits per month",
+    figCommits: "Commits per year",
+    figPrs: "Pull requests merged per year",
+    figChurn: "Lines of code moved per year",
+    legendAdded: "Added",
+    legendRemoved: "Removed",
+    secEras: "Timeline, stage by stage",
+    secStrategies: "Engineering strategies applied",
+    secTime: "Time and cadence",
+    secTimeNote: "Derived from authorship timestamps. A commit proves work happened that day; it does not measure exact hours, nor time spent on code review, design, incidents or meetings.",
+    impactLabel: "Likely user impact:",
+    impactLabelShort: "Likely impact:",
+    evidenceLabel: "Evidence:",
+    thYear: "Year", thCommits: "Commits", thPrs: "PRs", thAdded: "Added", thRemoved: "Removed",
+    thMonth: "Month", thProject: "Project", thMine: "His", thTotal: "Total", thWeight: "Share", thNature: "Nature",
+    thPeriod: "Period", thFocus: "Focus", thProjects: "Projects", thMilestones: "Milestones",
+    projectPrefix: "Project:",
+    ofProject: "of the project",
+    commitsSuffix: "commits",
+    commitSuffix: "commit"
+  },
+  global: {
+    label: "Overview",
+    hint: "all seven projects together",
+    eyebrow: "Consolidated view",
+    title: "Jon Sánchez Martín",
+    lede: `Nearly seven years building Freepik's two presentation and design products, plus the infrastructure and
+      tooling that keep them running. A <strong>full-stack profile with its centre of gravity in backend and
+      platform</strong>: <em>owner</em> of the payments domain, executed the GCP migration of <strong>two products
+      in the same year</strong> —and has kept it declared in Terraform ever since— and has spent the last two years
+      as technical lead of the <strong>AI Presentation Maker</strong>, end to end.`,
+    meta: ["Period: <strong>Oct 15, 2019 → Jul 16, 2026</strong>", "7 projects analysed", "Source: full Git history, all branches"],
+    secTiles: "All seven projects together",
+    tiles: [
+      {n:"4,239", k:"commits in total", s:"across 7 distinct projects"},
+      {n:"338", k:"pull requests merged", s:"288 Slidesgo · 48 Wepik · 2 elsewhere"},
+      {n:"947", k:"days shipping code", s:"union of dates across the 7 projects"},
+      {n:"≈4.3 <small>person-years</small>", k:"of days with code actually shipped", s:"947 days / 220 working days per year"},
+      {n:"+420k<small> / −225k</small>", k:"lines of code", s:"excluding test fixtures"},
+      {n:"5,904", k:"distinct files touched", s:"4,056 created from scratch"},
+      {n:"6 <small>yr 9 mo</small>", k:"of continuous track record", s:"Oct 2019 → Jul 2026"},
+      {n:"3", k:"Saturdays with commits", s:"across 947 active days; zero Sundays"}
+    ],
+    tilesNote: `The seven projects combined, aggregating all four author identities. Active days are the
+      <em>union</em> of dates, not the sum: 758 days on Slidesgo + 220 on Wepik + 114 on the rest, minus the
+      overlapping ones, gives 947.`,
+    compareFig: "Commits per year and project",
+    compareNote: "Commits per year and project. The three series share one scale; Wepik's gaps in 2023 and 2025 line up exactly with Slidesgo's peaks.",
+    secArc: "Career arc",
+    arcNote: `Eight stages across 82 months. The periods overlap because the work overlapped: the graphics editor
+      ran alongside the payments layer, and infrastructure got touched the same day as the product that needed it.`,
+    arc: [
+      {when:"2019 – 2020", focus:"Platform and content foundations", projects:"Slidesgo", milestone:"Admin panel, publishing system, Cloudflare, French-language launch, PHP 7.4"},
+      {when:"2020 – 2021", focus:"Direct-manipulation graphics editor", projects:"Wepik", milestone:"Image cropping, document-wide colours, undo/redo, Dropbox, multi-file upload"},
+      {when:"2021", focus:"Owner of payments, tax compliance and BI", projects:"Slidesgo", milestone:"VAT for EU, UK, US and India, Cashier v13, webhook disputes, ARPU and downloads replica"},
+      {when:"2022", focus:"GCP migration of two products, and infrastructure as code", projects:"Slidesgo · Wepik · Terraform", milestone:"Istio, PHP-FPM, async renderer, Kubernetes probes — +141k lines across both products"},
+      {when:"2023", focus:"Major upgrades, security and the pricing engine", projects:"Slidesgo · Payments API", milestone:"PHP 8.2, Laravel 10, CSPT→XSS chain fixed, region-based price A/B testing"},
+      {when:"2024", focus:"Vue 3, observability and the first AI products", projects:"Slidesgo · Grafana", milestone:"Vite and Vue 3, OpenTelemetry, Prometheus, document→deck, rollout by % of traffic"},
+      {when:"2025", focus:"AI Presentation Maker as a product", projects:"Slidesgo", milestone:"Streaming with fallback, KEDA, image generation, queue separation, Markdown output"},
+      {when:"2026", focus:"Visual editor and measurable generative quality", projects:"Slidesgo", milestone:"Editable element model, custom layouts, AI-driven library evaluation, hardening"}
+    ],
+    secCross: "What only shows up when you look at all seven at once",
+    crossNote: "Five conclusions no single project can support on its own.",
+    crossFindings: [
+      {h:"2022: two GCP migrations, one engineer", body:`In January 2022 he opens Slidesgo's migration to GCP (#2497); in May, Wepik's (#3493). Both with Istio, GCS buckets, normalised Docker images and the same pair of local-development tools (a DB tunnel and <span class="mono">syncdb</span>). The year totals <strong>+141k lines</strong> across the two products. This is the portfolio's strongest argument: the migration was not an unrepeatable success, it was a procedure applied twice.`},
+      {h:"One project's gaps are the other's peaks", body:`Wepik goes almost empty in 2023 and 2025 exactly when Slidesgo hits its highest points. Read project by project it looks like discontinuity; read together it is a single line of focus moving to whichever product holds the value. Only <strong>67 days</strong> in seven years have commits in both: there was no multitasking, there was sequential focus.`},
+      {h:"Two complementary technical profiles", body:`Slidesgo evidences domain backend, tax compliance, LLM pipelines and platform work. Wepik evidences <strong>direct-manipulation graphics frontend</strong> — geometry, cropping, transforms, undo/redo, client/server render parity — which appears nowhere else. Together they cover everything from the deploy pipeline to the pixel the user drags.`},
+      {h:"The same judgement across different projects", body:`The patterns repeat regardless of the project: rendering and heavy work moved out of the user's request, graceful degradation instead of errors, limits decided deliberately rather than discovered in production, and internal tooling so the rest of the team can operate what he builds.`},
+      {h:"Infrastructure was never a separate project", body:`Of the 114 active days across the Terraform, tooling and Grafana projects, <strong>only 36 are exclusive</strong>: the rest coincide with days of product work. There is no separate "infra phase" — the same day he touched a feature he touched the nodepool, the secret or the dashboard that feature needed. And ownership there is <strong>66% and 88%</strong>, against 25% on Slidesgo.`}
+    ],
+    secStack: "Stack backed by the commit history",
+    stackNote: "Technologies with real, merged work behind them in one or more of these projects — not a list of things he has heard of.",
+    stack: [
+      {h:"Backend and domain", items:["PHP 7.4 → 8.3, Laravel 6 → 11","DDD architecture (Domain / Application / Infrastructure)","Stripe + Cashier, multi-country tax compliance","Horizon, queues, jobs and console commands","MySQL: 69 migrations across the two products"]},
+      {h:"Frontend", items:["Vue 3 + Composition API, Vite","Canvas editors: SVG, geometry, transforms","Quill / rich text, undo-redo, snap and nudge","Alpine.js, Blade, Livewire, Tailwind","Cypress E2E"]},
+      {h:"Platform and operations", items:["GCP, Kubernetes, Istio, Helm, Cloud Build","<strong>Terraform</strong>: GKE, IAM, Secret Manager, load balancers","KEDA for worker autoscaling","Cloudflare, GCS buckets, CDN and caching","Docker and local environments faithful to production"]},
+      {h:"Observability", items:["OpenTelemetry and Cloud Trace in production","Prometheus: exporters and custom metrics","<strong>Grafana</strong>: dashboards and provisioning as code","xhprof for PHP profiling","Business alerts on real user events"]},
+      {h:"Applied AI", items:["LLM orchestration: OpenAI, GPT-5 mini","Image generation: Flux, Seedream","Streaming with fallback to polling","Automated evaluation of generative quality","OOXML / PPTX generation and its memory limits"]},
+      {h:"Automation and DX", items:["41 console commands for repeatable operations","Bash + fzf scripting: tunnels, bastions, rollback","Cross-environment DB sync, chunked dumps","Nova actions giving business and support autonomy","ProxySQL and guarded production access"]}
+    ],
+    timeNote: `Everything below is derived from authorship timestamps. A commit proves work happened that day; it
+      does not measure exact hours, nor the time spent on code review, design, incidents or meetings — which for a
+      senior profile is a substantial part of the real job.`,
+    timeTiles: [
+      {n:"947", k:"days shipping code", s:"out of 1,763 working days in the period"},
+      {n:"54<small>%</small>", k:"of working days with code shipped", s:"the rest: review, incidents, design, time off"},
+      {n:"98<small>%</small>", k:"of commits between 8am and 6pm", s:"median at noon; nothing after 10pm"},
+      {n:"3", k:"Saturdays with commits in 7 years", s:"zero Sundays, in any of the 7 projects"}
+    ],
+    secHow: "How to read this document",
+    disclaimer: `<p><strong>On "user impact".</strong> These projects contain code, not product analytics. The impact
+      blocks are <em>reasoned inferences from what the code does</em>, not measured metrics of conversion, retention
+      or revenue. For external use — evaluation, interview, promotion — they should be backed with real numbers from
+      Amplitude/GA4 or the BI dashboards, especially for pricing and the AI Presentation Maker.</p>
+      <p><strong>On identities.</strong> The work is signed with four different name/email pairs. Any analysis using
+      a single identity underestimates the real volume by roughly 800 commits.</p>`,
+    footer: `<p><strong>Methodology.</strong> Figures extracted from the Git histories of 7 repositories on July 27,
+      2026, aggregating the <strong>four author identities</strong> the work is signed with (two GitHub accounts and
+      two email addresses). Pull requests are identified by the <span class="mono">(#NNNN)</span> suffix on
+      squash-merge commits in the main branch. Code figures exclude test <em>fixtures</em> where stated. Everything
+      is reproducible against the original repositories with <span class="mono">git log</span>,
+      <span class="mono">--numstat</span> and author filters.</p>
+      <p>Repository names and internal paths have been replaced with project names. Pull request numbers are kept
+      because they are the verifiable reference for each contribution.</p>`
+  },
+  slidesgo: {
+    label: "Slidesgo",
+    hint: "Laravel + Vue monolith · templates and AI Presentation Maker",
+    eyebrow: "Primary product",
+    path: "presentation templates · generative AI",
+    title: "Slidesgo",
+    lede: `Nearly <strong>seven years</strong> of continuous development on the Slidesgo monolith: from the template
+      CMS and the billing layer, through the full migration to GCP/Kubernetes, to building the
+      <strong>AI Presentation Maker</strong> — its LLM pipeline, its PPTX generator and its visual editor in
+      Vue&nbsp;3.`,
+    meta: ["Period: <strong>Oct 15, 2019 → Jul 16, 2026</strong>", "82 months · 6 years 9 months", "Role: successive technical owner of 3 domains"],
+    tiles: [
+      {n:"3,398", k:"commits in total", s:"2,648 of them already on <span class='mono'>master</span>"},
+      {n:"288", k:"pull requests merged", s:"287 verifiable on master"},
+      {n:"24.9<small>%</small>", k:"of all human commits on master", s:"1st of ~30 contributors (excl. Dependabot)"},
+      {n:"758", k:"days shipping code", s:"4.5 commits per active day"},
+      {n:"4,780", k:"distinct files touched", s:"3,364 created from scratch"},
+      {n:"+331k<small> / −155k</small>", k:"lines of code on master", s:"+47k/−25k more in test fixtures"},
+      {n:"65", k:"database migrations", s:"schema evolved with no downtime"},
+      {n:"41", k:"console commands / jobs", s:"automation and operational tooling"},
+      {n:"80", k:"test suites added", s:"Unit · Feature · Integration"},
+      {n:"0", k:"weekend commits", s:"sustained delivery, not heroics"}
+    ],
+    tilesNote: `Metrics from <code>git log</code>, aggregating all four author identities (two GitHub accounts and
+      two email addresses). The <em>master</em> figures reflect work already shipped to production; totals include
+      working branches.`,
+    monthlyNote: "82 months, Oct 2019 – Jul 2026. Each bar is one month; hover for detail.",
+    commitsNote: "2026 only covers up to July and is already the most productive year.",
+    prsNote: "2022 drops to 7 PRs with 345 commits: the year of long-lived infrastructure branches.",
+    churnNote: "Excludes test fixtures. The 2022 spike is the GCP/Kubernetes migration; the 2026 one is the visual editor and the AI pipeline.",
+    partialMonth: "July",
+    erasNote: "Stages identified by grouping the 288 merged PRs by domain and date. The role given describes the actual work of that stage, not a formal title.",
+    eras: [
+      {
+        title: "Platform and content foundations",
+        when: "Oct 2019 – Dec 2020 · ~15 months · 297 commits · 31 PRs",
+        role: "Laravel backend · CMS · CDN",
+        bullets: [
+          "Stood up the <strong>Nova admin panel</strong> (PR #35, his first contribution) as the content management tool for the editorial team.",
+          "<strong>Template publishing system</strong> rewritten (#559) and data model normalised (#206, #210): the foundation the catalogue still runs on today.",
+          "<strong>Cloudflare</strong> integration (#102) plus programmatic asset and cache invalidation on every deploy (#918, #996) — the end of deployments serving stale cache.",
+          "Persisted search history (#85), the basis for recommendations and demand analytics.",
+          "<strong>Internationalisation</strong>: launched the site in French (#826, #832) and added support for new slide formats and assets (#686, #755).",
+          "Upgrade to <strong>PHP 7.4</strong> (#142) while keeping the product live in production."
+        ],
+        impact: "faster publishing for the content team, pages served from CDN without manual purges, and a new market (France) opened at product level.",
+        tags: ["Laravel","Nova","Cloudflare CDN","MySQL migrations","i18n","PHP 7.4"]
+      },
+      {
+        title: "Monetisation, tax compliance and Business Intelligence",
+        when: "Jan 2021 – Dec 2021 · 12 months · 534 commits · 40 PRs",
+        role: "Owner of the payments and subscriptions domain",
+        bullets: [
+          "<strong>Multi-jurisdiction tax compliance</strong>: EU and UK VAT (#2007), state and postal code for the US and India (#1666), regional Spanish VAT incl. Canary Islands/Ceuta/Melilla (#2175), February regulations (#2900). Legal-risk work, not cosmetic.",
+          "<strong>Laravel Cashier upgraded to v13</strong> (#2052) and subscriptions rescheduled to the end of the billing cycle (#1896) — changing billing semantics without breaking the installed base.",
+          "<strong>Stripe dispute handling via webhook</strong> plus a reconciliation command (#1806), reporting of unknown Stripe IDs (#1539), and a currency fix on credit notes (#1417).",
+          "Built the <strong>Business Intelligence</strong> layer (#1408, #1726 downloads replica, #1649 ARPU, #2432 team-product identification): <strong>40 of the 52 commits</strong> in the <span class='mono'>BusinessIntelligence</span> domain are his.",
+          "Human-readable translation of Stripe events inside Nova (#1839): support and finance no longer need an engineer to understand a charge.",
+          "Google <strong>One Tap</strong> (#1103), OAuth authentication via <span class='mono'>auth_code</span> (#1347) and related-content optimisations (#1825/#1826)."
+        ],
+        impact: "correct prices and taxes per country (fewer disputes, less checkout friction), recovery of failed charges, and product decisions based on real ARPU and download metrics.",
+        tags: ["Stripe","Laravel Cashier","Tax compliance EU/UK/US/IN","Webhooks","BI / replicas","OAuth"]
+      },
+      {
+        title: "Migration to GCP and Kubernetes",
+        when: "Jan 2022 – Dec 2022 · 12 months · 345 commits · 7 PRs",
+        role: "Platform / DevOps engineer",
+        bullets: [
+          "<strong>Full platform migration to Google Cloud</strong> (#2497): the most structurally significant PR in the whole history. The year concentrates <strong>+106,200 / −54,288 lines</strong> — 32% of all code added in seven years — into just 7 PRs, the signature of a long-lived infrastructure branch.",
+          "Runtime moved to <strong>PHP-FPM</strong> with <strong>Cloud Trace</strong> and <strong>xhprof</strong> (#3518): production observability and profiling where there had only been guesswork.",
+          "Kubernetes <strong>readiness and liveness probes</strong> implemented as artisan commands (#3247): the orchestrator stops routing traffic to pods that cannot serve it yet.",
+          "Tunnels to the GCP database and Search Engine for local development (#2988) and a <strong>database sync command</strong> (#3356) — the local environment starts to resemble production.",
+          "Sustained ownership of the deployment code: <strong>337 of 522 commits</strong>, with <span class='mono'>cloudbuild.yaml</span> as the single most-touched file of his entire track record (70 times)."
+        ],
+        impact: "elastic scaling and zero-downtime deployments, fewer availability incidents during traffic spikes. Invisible impact when it works — which is exactly the goal.",
+        tags: ["GCP","Kubernetes","Istio","Helm","Cloud Build","PHP-FPM","Cloud Trace","xhprof"]
+      },
+      {
+        title: "Modernisation, growth and security",
+        when: "Jan 2023 – Dec 2023 · 12 months · 447 commits · 40 PRs",
+        role: "Senior full-stack · applied security",
+        bullets: [
+          "<strong>Major upgrades in production</strong>: PHP 8.2 (#3867) and Laravel 10 (#3970), with the compatibility debt resolved in the same move.",
+          "<strong>Real vulnerabilities fixed</strong>: a <em>Client-Side Path Traversal + cache poisoning → stored XSS in localStorage</em> chain (#3927), PDFs made private (PRTS-401, #4361) and hardening of leaked credentials (#3844).",
+          "<strong>Experimental pricing engine</strong>: price A/B testing (#4404), a Q4 2023 campaign with LATAM and Asia regional variants (#4671, #4677), variable decimals per currency with cache versioning to prevent contamination (#4407) and pricing cache optimisations (#4447).",
+          "<strong>SEO and Core Web Vitals</strong>: <span class='mono'>hreflang</span>/alternates (#4573), swiper image preloading and CLS improvements (#4204), indexing up to page 50 with <span class='mono'>rel=prev/next</span> (#4946).",
+          "<strong>Education vertical</strong>: .edu domain whitelisting (#4574), teacher toolkits (#4345), school enabled in non-English languages (#4314).",
+          "Full product <strong>rebranding</strong> (#4737) and brand-licence compliance via Cloudflare rules per localised URL (#4760)."
+        ],
+        impact: "personal data and files protected against exfiltration; prices adjusted to regional purchasing power; and pages that load and rank better — Slidesgo's primary acquisition channel.",
+        tags: ["PHP 8.2","Laravel 10","AppSec / XSS / CSPT","A/B testing","Technical SEO","Core Web Vitals"]
+      },
+      {
+        title: "Modern frontend, observability and the first AI products",
+        when: "Jan 2024 – Dec 2024 · 12 months · 434 commits · 51 PRs",
+        role: "Full-stack · frontend architecture · applied AI",
+        bullets: [
+          "<strong>Migration to Vite and Vue 3</strong> (#5109): replaced the legacy build pipeline and moved to the Composition API — the foundation of every frontend change that followed.",
+          "<strong>End-to-end observability</strong>: instrumentation with <strong>OpenTelemetry</strong> (#4953), Cloud Trace in production (#4945) and a <strong>Prometheus</strong> exporter with its charts and services (#4993).",
+          "<strong>Delivery performance</strong>: assets published to a bucket and served from <span class='mono'>media.slidesgo.com</span> (#5401), <span class='mono'>Cache-Control</span> policies for unauthenticated users (#5378), static 404s resolved at nginx (#5376), media loading optimisation (#5023).",
+          "<strong>Login without a network hop</strong>: user data extracted from the encrypted access token instead of an HTTP call to the Profile API (#5185) — one less round trip on every sign-in.",
+          "<strong>Birth of the AI suite</strong>: <em>AI doc to presentation</em> (#5569), public launch of <em>PDF to PPT</em> (#5620), <em>Rewrite slide with AI</em> (#5721), outline editing (#5689) and document drag &amp; drop (#5746).",
+          "<strong>Governed rollout</strong>: Presentation Maker v1 behind feature flags (#5951) and v2 served to a <strong>percentage of traffic</strong> (#5957) — progressive delivery instead of a big bang.",
+          "Also: pricing landing rework (#5306), interests rework (#5350), topnav and menu refactors (#5136, #5792, #5812), and a scheduled command to purge OpenAI storage and avoid exhausting quota (#5794)."
+        ],
+        impact: "the first time users can <em>generate</em> a deck instead of only downloading one; faster asset navigation from CDN; and an AI product launched with a safety net (flags + % of traffic) rather than blind.",
+        tags: ["Vue 3","Vite","OpenTelemetry","Prometheus","OpenAI API","Feature flags","Progressive rollout"]
+      },
+      {
+        title: "AI Presentation Maker as a product",
+        when: "Jan 2025 – Dec 2025 · 12 months · 614 commits · 32 PRs",
+        role: "De facto tech lead of the AI Presentation Maker",
+        bullets: [
+          "<strong>Generator rewritten</strong> (#6052) and the PPTX pipeline refactored (#6116): from prototype to a maintainable system. <strong>188 of the 362 commits</strong> in the <span class='mono'>AiPresentationMaker</span> domain are his.",
+          "<strong>Image generation</strong> integrated and improved (#6105) with the <strong>Flux</strong> model (#6163) and async callbacks.",
+          "<strong>Scaling the AI backend</strong>: worker autoscaling with <strong>KEDA</strong> over Horizon (#6107), queue separation by criticality (#6224) and a concurrency rework to improve perceived usability (#6559).",
+          "<strong>Latency UX</strong>: outline and content responses <strong>streamed</strong> (#6315) with automatic <em>fallback</em> to polling when the OpenAI stream fails (#6404) — graceful degradation instead of an error.",
+          "<strong>Prompt architecture decision</strong>: LLM output migrated from JSON to Markdown (#6520) and multi-style text replacement (#6706), reducing parsing fragility.",
+          "<strong>Editing capability</strong>: regenerate, tone, undo/redo (#6247), writing and editing slide content (#6262), attachments (#6456) and a settings panel (#6798).",
+          "<strong>Product consolidation</strong>: the <em>PDF to PPT</em> tool is replaced by the Presentation Maker (#6560, #6561) — one less surface to maintain, a better flow for the user.",
+          "<strong>Infrastructure layer refactor</strong> (#6523) and translations moved into the codebase, waiting on the async Lokalise job (#6368, #6365)."
+        ],
+        impact: "the generator responds word by word instead of after an opaque wait, absorbs demand spikes without stalled queues, and fails recoverably. This is the stage where the AI Presentation Maker stops being an experiment and becomes Slidesgo's value proposition.",
+        tags: ["LLM orchestration","Streaming / SSE","KEDA HPA","Laravel Horizon","Flux (img-gen)","PhpPresentation","Prompt engineering","Lokalise"]
+      },
+      {
+        title: "Visual editor, generative quality and hardening",
+        when: "Jan 2026 – Jul 2026 · 7 months · 727 commits · 86 PRs",
+        role: "Tech lead · the most productive year on record",
+        bullets: [
+          "<strong>A real visual editor</strong>: slides refactored into an <span class='mono'>elements[]</span> model with editable rich-text boxes (#7536), a contextual toolbar over Quill (#7634, #7568), <strong>magnetic snapping and arrow-key nudging</strong> (#7641), a colour picker that accepts pasted HEX (#7640), line height and mobile UI fixes (#7595).",
+          "<strong>Visual and custom layouts</strong>: a <em>custom layouts</em> system (#6950, #7453) and the <em>visual layouts</em> prerelease (#7264, #7324) with design properties and end-to-end per-image geometry persistence (#7639).",
+          "<strong>Measurable generative quality</strong>: AI-driven evaluation of the entire library (#7145), <span class='mono'>ai:prepare</span> / <span class='mono'>ai:evaluate</span> / validator commands iterated across ~8 PRs (#7429→#7434), and explicit reporting of what cannot be fixed (#7416). Turns “the output looks off” into a metric.",
+          "<strong>PPTX performance engineering</strong>: partial PPTX loading in PhpPresentation (#7439) and memory optimisations (#7450) — low-level work inside a third-party library to fit the container's budget.",
+          "<strong>Offensive-defensive security</strong>: <strong>SSRF</strong> mitigation (#7339), <strong>path traversal</strong> prevention in image generation (#7352), maker access control via Policies (#7349), internal-host exclusion on the IQS callback (#7355) and a fix for malicious user attribution (#7403).",
+          "<strong>Model and prompt iteration</strong>: prompts for GPT-5 mini (#7295), <em>Seedream 4.5</em> enabled by default for premium (#7329), per-model resolution (#7337) and the most recent <em>LLM rework</em> (#7761).",
+          "<strong>Frontend boot performance</strong>: boot data lazy-loaded via <span class='mono'>/manifest</span> + <span class='mono'>/bootstrap</span> (#7647) and then <strong>baked into the Vite bundle</strong> (#7675) to eliminate cache staleness during rolling deploys.",
+          "<strong>Traceability and business signal</strong>: presentation UUID stamped into the .pptx OPC metadata for provenance (#7667), business alerts on PPTX downloads (#7278), generation and image metrics (#7331, #7332) and Prometheus metrics for the Search Engine (#7731).",
+          "<strong>Internal tooling</strong>: Nova actions to launch <span class='mono'>ai:prepare</span> and <span class='mono'>ai:evaluate</span> (#7455, #7457), custom layout previews (#7291), a direct link to the user's presentation (#7326) and a banner when staff view someone else's deck (#7574)."
+        ],
+        impact: "users stop receiving an immutable result and start <em>editing</em> their deck in the browser; output quality is measured and corrected systematically; and app boot no longer depends on an extra request vulnerable to stale cache.",
+        tags: ["Vue 3 composables","Quill / rich text","OOXML / OPC","PhpPresentation","GPT-5 · Seedream","LLM evaluation","SSRF / path traversal","Laravel Policies"]
+      }
+    ],
+    strategiesNote: "Patterns that recur across the 288 PRs — not techniques used once, but judgement sustained over years.",
+    strategies: [
+      {h:"Progressive delivery by default", items:["Feature flags before exposing anything new","Rollout by percentage of traffic, never a big bang","A <span class='mono'>debug</span> cookie and staff banners to validate in production","<em>Fallback</em> paths for when the new route fails"], ev:"#5951, #5957, #7347, #7574, #6404"},
+      {h:"Layered DDD architecture", items:["Business logic in <span class='mono'>Domain/</span> with Actions and DTOs","Laravel confined to <span class='mono'>Application/</span>","Explicit refactors of the infrastructure layer","Data models (<span class='mono'>elements[]</span>) before view patches"], ev:"#6523, #7536, #6116, 65 migrations"},
+      {h:"Observability as a requirement, not an extra", items:["OpenTelemetry, Cloud Trace and xhprof in production","Custom Prometheus exporters and metrics","Business alerts on real user events","Targeted logging in the AI pipeline's blind spots"], ev:"#4953, #4945, #4993, #7278, #7332, #7731"},
+      {h:"Performance measured at the edge", items:["Assets to a bucket + dedicated media domain","Cache-Control differentiated by authentication","CLS, image preloading and Core Web Vitals","Boot data baked into the bundle to kill stale cache"], ev:"#5401, #5378, #4204, #5425, #7647, #7675"},
+      {h:"Security applied, not audited from a distance", items:["A CSPT + cache poisoning → XSS chain, fixed","SSRF and path traversal in image generation","Authorisation via Policies instead of scattered checks","Private files and credential hardening"], ev:"#3927, #7339, #7352, #7349, #4361, #3844"},
+      {h:"LLM engineering with product judgement", items:["Markdown output instead of fragile JSON","Streaming that degrades to polling","Automated evaluation of the whole library","Model choice and resolution per user segment"], ev:"#6520, #6315, #6404, #7145, #7329, #7337, #7761"},
+      {h:"Scaling asynchronous work", items:["Worker autoscaling with KEDA over Horizon","Queues separated by criticality","Timeouts and concurrency tuned to the provider's reality","Scheduled purging of external storage to protect quota"], ev:"#6107, #6224, #6559, #7229, #7167, #5794"},
+      {h:"Tooling for the team", items:["41 console commands for repeatable operations","Nova actions giving business and support autonomy","Tunnels and DB sync for a faithful local environment","Stripe events translated into human language"], ev:"#7455, #7457, #7291, #2988, #3356, #1839"}
+    ],
+    timeTiles: [
+      {n:"82 <small>months</small>", k:"of continuous presence on the project", s:"never a gap longer than 3 months"},
+      {n:"≈3.4 <small>person-years</small>", k:"of days with code actually shipped", s:"758 days / 220 working days per year"},
+      {n:"43<small>%</small>", k:"of the period's working days", s:"the rest: review, other projects, incidents, time off"},
+      {n:"98<small>%</small>", k:"of commits between 8am and 6pm", s:"median at noon; nothing after 10pm"}
+    ],
+    callouts: [
+      {h:"Two honest readings of these numbers", ps:[
+        "<strong>2022 is the deceptive year.</strong> Only 7 PRs, but 345 commits and a third of all the code added in seven years. It is not a weak year: it is a platform migration developed in long-lived branches. Counting PRs without looking at the magnitude of the change inverts the conclusion.",
+        "<strong>2026 is the densest year, and it is not over.</strong> 727 commits and 86 PRs in seven months — more PRs than in any previous full year — on the product with the highest strategic value. The trend of the last 18 months is acceleration, not a plateau.",
+        "<strong>Zero weekend commits</strong> across 758 active days, with activity concentrated in working hours. The productivity in this history does not come from overtime."
+      ]}
+    ],
+    profileTitle: "The profile this history describes",
+    profile: `<p>A <strong>full-stack engineer with his centre of gravity in backend and platform</strong> who has acted
+      as technical <em>owner</em> of three successive business-critical domains: first <strong>payments,
+      subscriptions and tax compliance</strong>; then the <strong>infrastructure</strong> (GCP, Kubernetes,
+      observability, CI/CD); and for the last two years the entire <strong>AI Presentation Maker</strong> — LLM
+      pipeline, image generation, OOXML construction and the Vue 3 visual editor.</p>
+      <p>The recurring pattern is someone who <strong>takes a feature end to end</strong>: data migration, domain,
+      API, frontend, deployment, metrics and the internal tooling the rest of the team needs to operate it. It also
+      shows traits that rarely coexist in one person: multi-country tax compliance, fixing chained vulnerabilities,
+      performance engineering inside a third-party library, and prompt/model engineering with automated
+      evaluation.</p>`
+  },
+  wepik: {
+    label: "Wepik",
+    hint: "online graphics editor · Laravel + Vue + renderer",
+    eyebrow: "Second product",
+    path: "online graphic design editor",
+    title: "Wepik · online graphics editor",
+    lede: `A <strong>specialised contribution delivered in waves</strong> to Freepik's design editor: first the
+      direct-manipulation canvas tools (cropping, replacement, colour), then the history subsystem and storage
+      integrations, and in 2022 the <strong>GCP migration and asynchronous rendering</strong> of the export
+      service.`,
+    meta: ["Period: <strong>Jan 29, 2020 → Jun 16, 2026</strong>", "77 calendar months · 3 actual waves", "Role: specialist contributor, not owner"],
+    tiles: [
+      {n:"657", k:"commits in total", s:"653 of them on <span class='mono'>master</span>"},
+      {n:"48", k:"pull requests merged", s:"18 in 2020 · 13 in 2021 · 13 in 2022"},
+      {n:"3.3<small>%</small>", k:"of human commits on master", s:"a project with 30+ people and 21,392 commits"},
+      {n:"220", k:"days shipping code", s:"3.0 commits per active day"},
+      {n:"749", k:"distinct files touched", s:"378 created from scratch"},
+      {n:"+50k<small> / −37k</small>", k:"lines moved on master", s:"69% of them in 2022"},
+      {n:"576", k:"edits to <span class='mono'>.vue</span> components", s:"Editor.vue and Crop.vue leading"},
+      {n:"179", k:"touches to the Cypress suite", s:"editor E2E"},
+      {n:"26<small>%</small>", k:"of infrastructure commits", s:"133 of 510 — his area of strongest ownership"},
+      {n:"271", k:"days of longest pause", s:"focus shifted to Slidesgo"}
+    ],
+    tilesNote: `The same four author identities. This project shows a very different pattern from Slidesgo: not
+      continuous presence, but <strong>three waves of intense work</strong> (2020, 2021, 2022) followed by highly
+      specific one-off interventions.`,
+    monthlyNote: "77 months, Jan 2020 – Jun 2026. The gaps are real: months with no commits at all on this project.",
+    commitsNote: "Three clear waves: 2020 (canvas), 2021 (precision and integrations), 2022 (platform).",
+    prsNote: "2023 and 2025 with no PRs at all: the focus was on Slidesgo.",
+    churnNote: "2022 holds 69% of all code moved here: GCP migration, Istio and the async renderer.",
+    partialMonth: "June",
+    erasNote: "Stages identified by grouping the 48 merged PRs by domain and date. The role given describes the actual work of that stage, not a formal title.",
+    eras: [
+      {
+        title: "The canvas: cropping, colour and direct manipulation",
+        when: "Jan 2020 – Dec 2020 · 12 months · 281 commits · 18 PRs",
+        role: "Graphics editor frontend (Vue) + Laravel backend",
+        bullets: [
+          "<strong>Image cropping tool</strong> built across two full iterations (#332, #370) and maintained afterwards with a loading indicator and better event handling (#808, #1073) — one of the most delicate interactions in any canvas editor.",
+          "<strong>Copy on cursor</strong> (#307) and <strong>image replacement</strong> preserving the framing (#676): two gestures a user repeats dozens of times per design.",
+          "<strong>Document-wide colours</strong> (#800): recolouring an entire design in one action instead of element by element.",
+          "Fixed <strong>invalid SVG</strong> and sent fonts to the backend as data (#528) — the point where server-side rendering stops diverging from what the user sees in the browser.",
+          "<strong>User system and login refactored</strong> inside the editor (#558, #631, #656, #657): avatar and account modal without pulling the user off the canvas.",
+          "<strong>Design UUID and prevention of downloads for unmodified templates</strong> (#567): a product decision, not a technical one, implemented in the data model.",
+          "Maintenance of critical dependencies: Flaticon client refactored (#1169) and Spatie MediaLibrary taken to v9 (#1162)."
+        ],
+        impact: "cropping, replacing and recolouring make up most of the real use of a graphics editor. This is the stage where those tools were built and stabilised.",
+        tags: ["Vue","Canvas / SVG","subjx","Laravel","Spatie MediaLibrary","Flaticon API"]
+      },
+      {
+        title: "Precision, history and storage integrations",
+        when: "Jan 2021 – Dec 2021 · 12 months · 94 commits · 13 PRs",
+        role: "Editor frontend · third-party integrations",
+        bullets: [
+          "<strong>History manager</strong> (undo/redo) partially repaired (#2853): the most bug-prone subsystem in any editor, and the most frustrating when it fails.",
+          "<strong>Text shadow</strong> (#2903) and a fix for text drifting on scroll (#2927).",
+          "<strong>Page selector on download</strong> (#2951): exporting only the part of a long document that matters.",
+          "A3 artboard resolution capped to stay under 4K (#2107) — a render limit decided deliberately rather than discovered as a production failure.",
+          "<strong>Dropbox integration</strong> (#1926) and multi-file upload with a fix to the replace modal (#1774): the user's assets come in from wherever they already live.",
+          "<strong>Hotfix for endpoint spam</strong> (#2835) and a hover fix on cropped images (#3005)."
+        ],
+        impact: "less lost work from an unreliable undo, partial exports of long documents, and less friction bringing your own material into the editor.",
+        tags: ["Undo/redo","Dropbox API","Multi-file upload","Render limits","Production hotfix"]
+      },
+      {
+        title: "GCP migration and asynchronous rendering",
+        when: "Feb 2022 – Dec 2022 · 11 months · 237 commits · 13 PRs",
+        role: "Platform engineer for the editor",
+        bullets: [
+          "<strong>Editor migrated to Google Cloud</strong> (#3493), with <strong>Istio</strong> in staging and production (#3710, #3883), Docker image renaming (#3715) and a fix to the staging environment (#3879).",
+          "<strong>Asynchronous renderer</strong> (#3671) and <strong>image rendering with Electron</strong> (#3647), later moved to <strong>Cloud Render</strong> (#4061): export leaves the user's request and becomes a service that scales on its own.",
+          "<strong>GCS buckets</strong> for assets and for the frontend <span class='mono'>dist</span> (#3241, #4075) and a correct <span class='mono'>sys_tmpdir</span> inside the container (#3498).",
+          "<strong>Database tunnel and syncdb command</strong> for local development (#4166) — the same tool he built that year for Slidesgo, replicated here.",
+          "<strong>Logs for BI</strong> (#4810): the editor starts reporting what the user does to the analytics layer.",
+          "The year concentrates <strong>+34,875 / −29,532 lines</strong>, 69% of all the code he has moved in this project."
+        ],
+        impact: "exports that neither block the interface nor die on timeout, and a platform that absorbs demand spikes without manual intervention.",
+        tags: ["GCP","Istio","Electron","Cloud Render","GCS","Docker","Cloud Build"]
+      },
+      {
+        title: "Security, CI/CD and targeted maintenance",
+        when: "Jan 2023 – Jun 2026 · 45 commits · 4 PRs",
+        role: "Specialist interventions on demand",
+        bullets: [
+          "<strong>Anti-phishing work</strong> (#9687): a public editor is a natural vector for brand impersonation, and that risk was closed explicitly.",
+          "<strong>Three-step deployment</strong> with the Cypress pipeline triggered post-deploy (#9574) and correct propagation of <span class='mono'>yarn build</span> <em>exit statuses</em> (#10523) — a build that failed silently stops doing so.",
+          "<strong>CSP</strong> extended to <span class='mono'>*.magnific.com</span> (#11183), integrating the image-AI product inside the editor.",
+          "Sustained contribution to the E2E suite: 179 touches to Cypress across the project."
+        ],
+        impact: "fewer broken deployments reaching production and a phishing surface closed before it became an incident.",
+        tags: ["CSP","Anti-phishing","Cypress E2E","Cloud Build","Hardening"]
+      }
+    ],
+    strategiesNote: "With 48 PRs the pattern is narrower than on Slidesgo, but very well defined: direct manipulation on the canvas, and the render platform.",
+    strategies: [
+      {h:"Direct manipulation on the canvas", items:["Cropping, transforming and replacing images","Document-level global colours","Repetitive gestures optimised (copy on cursor)","Hover and coordinate fixes after transforms"], ev:"#332, #370, #808, #1073, #800, #307, #3005"},
+      {h:"Rendering outside the request", items:["Async renderer decoupled from the request","Image rendering with Electron","Migration to Cloud Render","Resolution limits decided, not discovered"], ev:"#3671, #3647, #4061, #2107"},
+      {h:"A repeatable platform migration", items:["GCP + Istio in staging and production","GCS buckets for assets and dist","DB tunnel + syncdb, identical to Slidesgo's","Normalised Docker images"], ev:"#3493, #3710, #3883, #3241, #4075, #4166"},
+      {h:"Securing a public surface", items:["Explicit CSP per integrated domain","Anti-phishing over user content","Preventing downloads of unmodified templates","Hotfix for endpoint abuse"], ev:"#11183, #9687, #567, #2835"}
+    ],
+    timeTiles: [
+      {n:"3 <small>waves</small>", k:"of concentrated work", s:"2020 canvas · 2021 precision · 2022 platform"},
+      {n:"≈1.0 <small>person-years</small>", k:"of days with code actually shipped", s:"220 days / 220 working days per year"},
+      {n:"3", k:"Saturdays with commits", s:"across 220 active days; zero Sundays"},
+      {n:"98<small>%</small>", k:"of commits between 8am and 6pm", s:"the same hourly pattern as Slidesgo"}
+    ],
+    callouts: [
+      {h:"How this project should be read", ps:[
+        "<strong>Here the profile is a visiting specialist, not an owner.</strong> 3.3% of human commits on a project with 30+ contributors. Claiming ownership of the editor would be false; what is defensible is ownership of <em>specific areas</em>: the cropping tool, the async renderer and 26% of the infrastructure commits.",
+        "<strong>The gaps are not inactivity, they are reassignment.</strong> The 271-day pause and the near-empty years of 2023 and 2025 coincide with the most intense stages on Slidesgo. Seen separately they look like abandonment; seen together they are focus that moved."
+      ]}
+    ],
+    profileTitle: "What this contribution demonstrates",
+    profile: `<p>Two capabilities the Slidesgo project cannot evidence on its own. The first is
+      <strong>direct-manipulation graphics frontend</strong>: cropping, transforms, coordinates, change history and
+      keeping browser and server rendering in sync. It is a different class of problem — geometric, stateful and
+      highly sensitive to user perception — from CRUD and data pipelines.</p>
+      <p>The second is that the <strong>2022 GCP migration was not an isolated case</strong>: it was executed on two
+      different products in the same year, with the same tooling (Istio, buckets, DB tunnel, syncdb). That turns the
+      Slidesgo migration into a replicated pattern rather than a one-off success.</p>`
+  },
+  otros: {
+    label: "Other",
+    hint: "infrastructure, tooling and targeted contributions",
+    eyebrow: "5 internal projects · infrastructure, tooling and targeted contributions",
+    title: "Other projects",
+    lede: `184 commits spread across five projects that are not product but hold the product up: the
+      <strong>infrastructure declared in Terraform</strong>, the <strong>tooling the team uses to connect to
+      it</strong>, the <strong>dashboards</strong> where its metrics are read, and a five-commit contribution to the
+      central payments API that unlocks an entire experiment.`,
+    meta: ["Period: <strong>Aug 3, 2021 → May 21, 2026</strong>", "114 active days · 36 of them exclusive", "Majority owner in 2 of the 5"],
+    tiles: [
+      {n:"184", k:"commits across 5 projects", s:"nearly all pushed straight to <span class='mono'>master</span>"},
+      {n:"88<small>%</small>", k:"of the team tooling project", s:"43 of 49 commits, including the <span class='mono'>init</span>"},
+      {n:"66<small>%</small>", k:"of the Terraform project", s:"109 of 164 commits"},
+      {n:"+38k<small> / −33k</small>", k:"lines moved", s:"314 files created from scratch"},
+      {n:"246", k:"edits to <span class='mono'>.tf</span> files", s:"infrastructure as code, not by hand"},
+      {n:"36", k:"days exclusive to these projects", s:"of 114 — the rest coincide with product days"}
+    ],
+    tilesNote: `None of these projects uses pull requests systematically (only 2 in total): work goes straight to
+      <span class="mono">master</span>, so here the unit of analysis is the commit, not the PR.`,
+    figByRepo: "Commits per project",
+    byRepoNote: "Volume does not say who is in charge: the two smallest projects are the ones that belong to him most.",
+    byRepoLabels: ["Terraform Slidesgo","Tooling","Grafana Provisioning","Grafana Dashboards","Central Payments API"],
+    byRepoNatures: ["infrastructure as code","team tooling","dashboard deployment","observability","another team's system"],
+    yearNote: "Continuous background activity from 2021 to 2026, never dominant.",
+    partialMonth: "May",
+    secBlocks: "The projects, one by one",
+    blocksNote: "Ordered by the real weight of the contribution, not by commit count.",
+    blocks: [
+      {
+        title: "Infrastructure as code for Slidesgo and Wepik",
+        repo: "Terraform Slidesgo",
+        when: "Aug 2021 – Jan 2026 · 109 commits · 72 active days · +32,005 / −26,113 lines",
+        role: "Owner of the declarative infrastructure · 66% of the project",
+        bullets: [
+          "Terraform definition of the <strong>GKE cluster that serves both products</strong>: versions, addons (persistent-disk CSI driver), <em>workload identity federation</em> and nodepools sized against real load — <span class='mono'>n2d-highcpu-8</span> ↔ <span class='mono'>16</span>, scaled from 8 to 16 CPU in March 2024, maximum raised to 12 nodes per zone.",
+          "<strong>Least-privilege IAM, not the default</strong>: a custom role for the certbot SA (PRTS-396) and another for the cluster's Secret Manager SA, created specifically to <em>list</em> secrets and avoid reading a disabled <span class='mono'>latest</span>. Permissions granted per group and per environment: k8s developer, monitoring editor, cloudtrace admin, secret accessor split between staging and production.",
+          "<strong>Secret Manager as the single source</strong>: CI/CD secrets (Lokalise, POEditor, Composer's <span class='mono'>auth.json</span>, the development <span class='mono'>.env</span>) conditioned per environment, with explicit deletion of the ones that fall out of use.",
+          "<strong>Load balancers and NEGs</strong>: Wepik's LB with host override for Cloudflare, url rewrite, <span class='mono'>x-proxied</span> / <span class='mono'>x-forwarded-for</span> headers and a backend timeout raised to 100s in coordination with the Wepik team. Includes an honest, documented revert: <span class='mono'>x-forwarded-for</span> was moved to Cloudflare on discovering it reported CF's IP instead of the user's.",
+          "<strong>Tuned logging sinks</strong>: <span class='mono'>/healthz</span> excluded from the BI sinks (noise that was contaminating the metrics), LB 500s authorised in Cloud Logging, and an application log bucket fed from the production GKE sink.",
+          "<strong>Redis maintenance window aligned with Cloud SQL</strong>: one coincident outage instead of two degradations at different times.",
+          "Terraform upgraded to <span class='mono'>^1.3</span>, retiring the experimental default module, plus a reorganisation of variables and files to parameterise staging and production from the same code."
+        ],
+        impact: "this is the source of truth for the infrastructure serving both products: anyone changing a nodepool, a secret or a load balancer goes through here. The granular IAM work is also the difference between a contained breach and a total one.",
+        tags: ["Terraform","GKE","IAM / least privilege","Secret Manager","Cloud LB / NEG","Cloud Logging","Cloud SQL","Redis"]
+      },
+      {
+        title: "The team's development tooling",
+        repo: "Tooling",
+        when: "Dec 2022 – May 2026 · 43 commits · 30 active days",
+        role: "Creator and maintainer · 88% of the project, including the initial commit",
+        bullets: [
+          "He created the project (<span class='mono'>init</span>, December 2022) and signs 88% of its history: it is <em>the</em> toolbox the team uses to connect to the infrastructure.",
+          "<strong>Cluster and bastion access</strong>: <span class='mono'>tunnel.sh</span>, <span class='mono'>cluster.sh</span> and a bastion utility with <strong>fzf</strong> for picking a destination interactively, main-cluster parameterisation, a terminal that stays open and a clean exit on Ctrl+C.",
+          "<strong>syncdb / synctables</strong>: cross-environment database sync with schema-only tables, <span class='mono'>--dump</span> to file, <span class='mono'>--no-tablespaces</span>, <span class='mono'>model_type</span> filtering on the media table and, the sharpest detail, <span class='mono'>--chunk</span> to <strong>import chunked dumps</strong> into tables with an auto-increment integer primary key.",
+          "<strong>Port ranges reassigned to avoid collisions</strong> between the development sandbox and other projects — the same problem he would later solve with Slidesgo's worktrees.",
+          "<strong>Guardrails against human error</strong>: a warning when connecting to production, case-sensitive comparison of the git origin, validation priority in the rollback script, and staging deployments with <span class='mono'>commitSHA</span> and env-var overrides.",
+          "A <strong>deployment rollback</strong> script, updated after the company's GitHub organisation migration, plus a fix to ProxySQL connections."
+        ],
+        impact: "every minute the team does not lose opening a tunnel, syncing a database or rolling back a deployment comes from here. This is multiplier work: invisible in the product, visible in everyone else's speed.",
+        tags: ["Bash","fzf","GKE","ProxySQL","MySQL dumps","DX / tooling","Rollback"]
+      },
+      {
+        title: "Operational observability",
+        repo: "Grafana Dashboards · Grafana Provisioning",
+        when: "Feb 2024 – Mar 2026 · 27 commits across 2 projects",
+        role: "Slidesgo's production dashboards",
+        bullets: [
+          "<strong>Migration of the legacy Grafana dashboard</strong> with a parameterised Prometheus datasource (PR #20, February 2024): closes the loop on the Prometheus exporter he had built in Slidesgo weeks earlier.",
+          "<strong>Slidesgo Horizon dashboard</strong> — queue and worker state — created and fixed over two rounds (February 2025). It is the panel people look at when the AI pipeline stalls.",
+          "<strong>Provisioning cleanup</strong> (March 2026): <span class='mono'>clean up dashboards and fix broken datasource refs</span>, with a balance of <strong>+1,053 / −6,665 lines</strong>. Deleting 5,600 lines of dead dashboards and broken references is maintenance nobody claims credit for and everybody benefits from.",
+          "The remainder are automated commits from the provisioning pipeline (<span class='mono'>Generation: N</span>), which document the real dashboard deployment cadence through 2025."
+        ],
+        impact: "the metrics he instrumented in the product are read on panels he also maintains. Instrumenting without a dashboard is telemetry nobody looks at.",
+        tags: ["Grafana","Prometheus","Laravel Horizon","Provisioning as code"]
+      },
+      {
+        title: "Five commits that unlock an entire experiment",
+        repo: "Central Payments API",
+        when: "Aug 11 – 17, 2023 · 5 commits · 1 PR (#538)",
+        role: "Targeted contribution to another team's core system",
+        bullets: [
+          "<span class='mono'>feat(events)</span>: adds the <strong>A/B test value to the <span class='mono'>SubscriptionsCreatedEvent</span></strong> of the company's central payments API, with its <span class='mono'>quantity</span> and event tests.",
+          "The context explains everything: that same August of 2023 he was launching the <strong>pricing A/B test on Slidesgo</strong> (#4404). Without the variant travelling inside the central subscription-created event, <strong>there is no way to attribute revenue to each variant</strong> — the experiment exists, but it cannot be measured.",
+          "5 commits in a project of 12,068 commits: the footprint is minimal and the dependency is total."
+        ],
+        impact: "the clearest example of a minimal contribution with a critical dependency: going into another team's project, making the small change with its tests, and turning a pricing experiment into a measurable one.",
+        tags: ["Domain events","Payments","A/B testing","PHPUnit"]
+      }
+    ],
+    secCallouts: "How to read these figures",
+    callouts: [
+      {h:"Why these 184 commits weigh more than their size", ps:[
+        `<strong>Only 36 of the 114 active days are exclusive to these projects.</strong> The rest coincide with days
+        of work on Slidesgo or Wepik: infrastructure was not a separate project to dedicate weeks to, it was touched
+        the same day as the product that needed it.`,
+        `<strong>And ownership here is higher than on the big products.</strong> 66% of the Terraform project and 88%
+        of the tooling one, against 25% on Slidesgo. The weight of a contribution is not measured in absolute
+        volume: in two of these projects, if he did not do it, it does not exist.`
+      ]}
+    ],
+    profileTitle: "What these projects add",
+    profile: `<p>The layer the other two cannot evidence on their own. The infrastructure behind Slidesgo and Wepik
+      was not just migrated to GCP in 2022: it has been kept <strong>declared in Terraform</strong> by the same
+      person for the four years since, granular IAM, secret management and load balancers included. The
+      <strong>tooling the team uses to operate that infrastructure</strong> he wrote himself — and owns 88% of that
+      project. So are the <strong>dashboards</strong> where the metrics he instrumented are read.</p>
+      <p>It is the full loop closed by one person: <em>declare the infrastructure → deploy → instrument → observe →
+      hand tools to the rest of the team</em>. And the contribution to the central payments API demonstrates the
+      other half of the craft: knowing how to enter another team's project, make the minimal change with tests, and
+      get out.</p>`
+  }
+}
+};
+
+/* =====================================================================
+   3) RENDER
+   ===================================================================== */
+let LANG = "en";
+let L = I18N.en;
+let nf = new Intl.NumberFormat("en-US", { useGrouping: "always" });
+let CURRENT_TAB = "global";
+
+const tabsEl = document.getElementById("tablist");
+const panelsEl = document.getElementById("panels");
+const langEl = document.getElementById("langsel");
+const tip = document.getElementById("tip");
+
+const mlabel = k => { const [y,m] = k.split("-"); return L.months[+m-1] + " " + y; };
+
+/* porcentaje legible: nunca redondear a "0 %" algo que no es cero */
+function pct(v, total) {
+  const p = v / total * 100;
+  const sep = LANG === "es" ? "," : ".";
+  const space = LANG === "es" ? " %" : "%";
+  if (p >= 10) return Math.round(p) + space;
+  if (p >= 0.1) return p.toFixed(1).replace(".", sep) + space;
+  return (LANG === "es" ? "<0" + sep + "1" : "<0.1") + space;
+}
+
+function tiles(list) {
+  return `<div class="tiles">` + list.map(t => `
+    <div class="tile">
+      <div class="n">${t.n}</div>
+      <div class="k">${t.k}</div>
+      ${t.s ? `<div class="s">${t.s}</div>` : ""}
+    </div>`).join("") + `</div>`;
+}
+
+function cards(list) {
+  return `<div class="cards">` + list.map(c => `
+    <div class="card">
+      <h3>${c.h}</h3>
+      ${c.body ? `<p style="font-size:13.5px;margin:0">${c.body}</p>`
+               : `<ul>${c.items.map(i => `<li>${i}</li>`).join("")}</ul>`}
+      ${c.ev ? `<div class="ev">${L.ui.evidenceLabel} ${c.ev}</div>` : ""}
+    </div>`).join("") + `</div>`;
+}
+
+function callouts(list) {
+  return list.map(c => `<div class="callout"><h3>${c.h}</h3>${c.ps.map(p => `<p>${p}</p>`).join("")}</div>`).join("");
+}
+
+function eras(list, shortLabel) {
+  const lbl = shortLabel ? L.ui.impactLabelShort : L.ui.impactLabel;
+  return list.map(e => `
+    <div class="era">
+      <h3>${e.title} <span class="when">${e.when}</span></h3>
+      <div class="role">${e.role}</div>
+      ${e.repo ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">${L.ui.projectPrefix} ${e.repo}</div>` : ""}
+      <ul>${e.bullets.map(b => `<li>${b}</li>`).join("")}</ul>
+      <div class="impact"><b>${lbl}</b> ${e.impact}</div>
+      <div class="tags">${e.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+    </div>`).join("");
+}
+
+function monthsFigure(key) {
+  const t = L[key], n = NUM[key];
+  const peaks = [...n.monthly].sort((a,b) => b[1]-a[1]).slice(0,4);
+  return `
+  <figure>
+    <figcaption>${L.ui.figMonths}</figcaption>
+    <div class="sub">${t.monthlyNote}</div>
+    <div class="cols" data-cols="${key}"></div>
+    <div class="xaxis" data-xaxis="${key}"></div>
+    <div class="peaks">${L.ui.peaks}: ${peaks.map(([k,v]) => `<strong>${mlabel(k)}: ${v}</strong>`).join(" · ")}</div>
+    <details class="tbl">
+      <summary>${L.ui.tableToggle}</summary>
+      <div class="scroll-x"><table><thead><tr><th>${L.ui.thMonth}</th><th class="num">${L.ui.thCommits}</th></tr></thead>
+      <tbody>${n.monthly.map(([k,v]) => `<tr><td>${mlabel(k)}</td><td class="num">${v}</td></tr>`).join("")}</tbody></table></div>
+    </details>
+  </figure>`;
+}
+
+function fillMonths(key, root) {
+  const n = NUM[key];
+  const cols = root.querySelector(`[data-cols="${key}"]`);
+  const xaxis = root.querySelector(`[data-xaxis="${key}"]`);
+  if (!cols) return;
+  const max = Math.max(...n.monthly.map(d => d[1]));
+  n.monthly.forEach(([k,v]) => {
+    const el = document.createElement("div");
+    el.className = "col";
+    // un mes sin commits no debe dibujar barra: 2px se leería como "1 commit"
+    if (v === 0) { el.style.height = "0"; el.style.minHeight = "0"; }
+    else el.style.height = Math.max(2, (v / max) * 150) + "px";
+    el.tabIndex = 0;
+    el.setAttribute("role", "img");
+    el.setAttribute("aria-label", `${mlabel(k)}: ${v} ${v === 1 ? L.ui.commitSuffix : L.ui.commitsSuffix}`);
+    const show = () => {
+      tip.textContent = `${mlabel(k)} · ${v} ${v === 1 ? L.ui.commitSuffix : L.ui.commitsSuffix}`;
+      tip.style.opacity = 1;
+      const r = el.getBoundingClientRect(), tr = tip.getBoundingClientRect();
+      let x = r.left + r.width/2 - tr.width/2;
+      x = Math.max(8, Math.min(x, window.innerWidth - tr.width - 8));
+      tip.style.left = x + "px";
+      tip.style.top = Math.max(8, r.top - tr.height - 8) + "px";
+    };
+    const hide = () => tip.style.opacity = 0;
+    el.addEventListener("mouseenter", show); el.addEventListener("focus", show);
+    el.addEventListener("mouseleave", hide); el.addEventListener("blur", hide);
+    cols.appendChild(el);
+
+    const tk = document.createElement("div");
+    tk.className = "xtick";
+    tk.textContent = (k.endsWith("-01") || k === n.monthly[0][0]) ? k.slice(0,4) : "";
+    xaxis.appendChild(tk);
+  });
+}
+
+function hbars(yearly, field, cls, partialMonth) {
+  const max = Math.max(...yearly.map(d => d[field]));
+  return yearly.map(d => `
+    <div class="hbar ${cls}">
+      <div class="yr">${d.y}${d.partial ? "*" : ""}</div>
+      <div class="track">
+        <div class="fill" style="width:${max ? (d[field]/max)*82 : 0}%"></div>
+        <div class="val">${nf.format(d[field])}</div>
+      </div>
+    </div>`).join("") + `<div class="axis-note">${L.ui.partialPrefix} ${partialMonth}</div>`;
+}
+
+/* barras horizontales genéricas: [{label, value, note}] */
+function simpleBars(items) {
+  const max = Math.max(...items.map(i => i.value));
+  return `<div class="hbars vlabels">` + items.map(i => `
+    <div class="hbar">
+      <div class="yr" title="${i.label}">${i.label}</div>
+      <div class="track">
+        <div class="fill" style="width:${(i.value/max)*74}%"></div>
+        <div class="val">${nf.format(i.value)}${i.note ? ` <span style="color:var(--text-muted)">· ${i.note}</span>` : ""}</div>
+      </div>
+    </div>`).join("") + `</div>`;
+}
+
+function churnRows(yearly) {
+  const max = Math.max(...yearly.flatMap(d => [d.add, d.del]));
+  return yearly.map(d => `
+    <div class="churn-row">
+      <div class="yr">${d.y}</div>
+      <div class="churn-bars">
+        <div class="churn-bar add"><div class="f" style="width:${(d.add/max)*80}%"></div><div class="t">+${nf.format(d.add)}</div></div>
+        <div class="churn-bar del"><div class="f" style="width:${(d.del/max)*80}%"></div><div class="t">−${nf.format(d.del)}</div></div>
+      </div>
+    </div>`).join("");
+}
+
+function yearTable(yearly) {
+  return `<details class="tbl"><summary>${L.ui.yearTableToggle}</summary><div class="scroll-x"><table>
+    <thead><tr><th>${L.ui.thYear}</th><th class="num">${L.ui.thCommits}</th><th class="num">${L.ui.thPrs}</th><th class="num">${L.ui.thAdded}</th><th class="num">${L.ui.thRemoved}</th></tr></thead>
+    <tbody>${yearly.map(d => `<tr><td>${d.y}${d.partial ? " *" : ""}</td><td class="num">${nf.format(d.commits)}</td><td class="num">${d.prs}</td><td class="num">+${nf.format(d.add)}</td><td class="num">−${nf.format(d.del)}</td></tr>`).join("")}</tbody>
+  </table></div></details>`;
+}
+
+function repoPanel(key) {
+  const t = L[key], n = NUM[key];
+  return `
+  <header class="hero">
+    <div class="eyebrow">${t.eyebrow} · ${t.path}</div>
+    <h1>${t.title}</h1>
+    <p class="lede">${t.lede}</p>
+    <div class="meta-row">${t.meta.map(m => `<span>${m}</span>`).join("")}</div>
+  </header>
+
+  <h2>${L.ui.secFigures}</h2>
+  <p class="section-note">${t.tilesNote}</p>
+  ${tiles(t.tiles)}
+
+  <h2>${L.ui.secActivity}</h2>
+  <p class="section-note">${L.ui.secActivityNote}</p>
+  ${monthsFigure(key)}
+  <div class="chart-grid">
+    <figure>
+      <figcaption>${L.ui.figCommits}</figcaption>
+      <div class="sub">${t.commitsNote}</div>
+      <div class="hbars">${hbars(n.yearly, "commits", "", t.partialMonth)}</div>
+    </figure>
+    <figure>
+      <figcaption>${L.ui.figPrs}</figcaption>
+      <div class="sub">${t.prsNote}</div>
+      <div class="hbars">${hbars(n.yearly, "prs", "s2", t.partialMonth)}</div>
+    </figure>
+  </div>
+  <figure>
+    <figcaption>${L.ui.figChurn}</figcaption>
+    <div class="sub">${t.churnNote}</div>
+    <div class="legend">
+      <span><i class="swatch" style="background:var(--series-1)"></i> ${L.ui.legendAdded}</span>
+      <span><i class="swatch" style="background:var(--series-8)"></i> ${L.ui.legendRemoved}</span>
+    </div>
+    <div class="churn">${churnRows(n.yearly)}</div>
+    ${yearTable(n.yearly)}
+  </figure>
+
+  <h2>${L.ui.secEras}</h2>
+  <p class="section-note">${t.erasNote}</p>
+  ${eras(t.eras)}
+
+  <h2>${L.ui.secStrategies}</h2>
+  <p class="section-note">${t.strategiesNote}</p>
+  ${cards(t.strategies)}
+
+  <h2>${L.ui.secTime}</h2>
+  <p class="section-note">${L.ui.secTimeNote}</p>
+  ${tiles(t.timeTiles)}
+  ${callouts(t.callouts)}
+
+  <h2>${t.profileTitle}</h2>
+  ${t.profile}
+  `;
+}
+
+function othersPanel() {
+  const t = L.otros, n = NUM.otros;
+  const bars = n.byRepo.map((r, i) => ({
+    label: t.byRepoLabels[i], value: r.value, note: pct(r.value, r.total) + " " + L.ui.ofProject
+  }));
+  const maxY = Math.max(...n.yearly.map(x => x.commits));
+  return `
+  <header class="hero">
+    <div class="eyebrow">${t.eyebrow}</div>
+    <h1>${t.title}</h1>
+    <p class="lede">${t.lede}</p>
+    <div class="meta-row">${t.meta.map(m => `<span>${m}</span>`).join("")}</div>
+  </header>
+
+  <h2>${L.ui.secFigures}</h2>
+  <p class="section-note">${t.tilesNote}</p>
+  ${tiles(t.tiles)}
+
+  <div class="chart-grid" style="margin-top:26px">
+    <figure>
+      <figcaption>${t.figByRepo}</figcaption>
+      <div class="sub">${t.byRepoNote}</div>
+      ${simpleBars(bars)}
+      <details class="tbl"><summary>${L.ui.tableToggle}</summary><div class="scroll-x"><table>
+        <thead><tr><th>${L.ui.thProject}</th><th class="num">${L.ui.thMine}</th><th class="num">${L.ui.thTotal}</th><th class="num">${L.ui.thWeight}</th><th>${L.ui.thNature}</th></tr></thead>
+        <tbody>${n.byRepo.map((r,i) => `<tr><td>${t.byRepoLabels[i]}</td><td class="num">${nf.format(r.value)}</td><td class="num">${nf.format(r.total)}</td><td class="num">${pct(r.value, r.total)}</td><td>${t.byRepoNatures[i]}</td></tr>`).join("")}</tbody>
+      </table></div></details>
+    </figure>
+    <figure>
+      <figcaption>${L.ui.figCommits}</figcaption>
+      <div class="sub">${t.yearNote}</div>
+      <div class="hbars">${n.yearly.map(d => `
+        <div class="hbar"><div class="yr">${d.y}${d.partial ? "*" : ""}</div>
+          <div class="track"><div class="fill" style="width:${(d.commits/maxY)*82}%"></div>
+          <div class="val">${d.commits}</div></div></div>`).join("")}<div class="axis-note">${L.ui.partialPrefix} ${t.partialMonth}</div></div>
+    </figure>
+  </div>
+
+  <h2>${t.secBlocks}</h2>
+  <p class="section-note">${t.blocksNote}</p>
+  ${eras(t.blocks, true)}
+
+  <h2>${t.secCallouts}</h2>
+  ${callouts(t.callouts)}
+
+  <h2>${t.profileTitle}</h2>
+  ${t.profile}
+  `;
+}
+
+function globalPanel() {
+  const g = L.global;
+  const SER = [
+    {label: L.slidesgo.label, byYear: Object.fromEntries(NUM.slidesgo.yearly.map(y => [y.y, y.commits]))},
+    {label: L.wepik.label,    byYear: Object.fromEntries(NUM.wepik.yearly.map(y => [y.y, y.commits]))},
+    {label: L.otros.label,    byYear: Object.fromEntries(NUM.otros.yearly.map(y => [y.y, y.commits]))}
+  ];
+  const years = [...new Set([...NUM.slidesgo.yearly, ...NUM.wepik.yearly, ...NUM.otros.yearly].map(y => y.y))].sort();
+  const max = Math.max(...SER.flatMap(s => Object.values(s.byYear)));
+  // orden fijo de la paleta categórica: azul, naranja, aqua (validado para CVD)
+  const colorOf = i => ["var(--series-1)","var(--series-2)","var(--series-3)"][i] || "var(--series-1)";
+
+  const compare = years.map(y => `
+    <div class="churn-row">
+      <div class="yr">${y}</div>
+      <div class="churn-bars">
+        ${SER.map((s,i) => {
+          const v = s.byYear[y] || 0;
+          return `<div class="churn-bar"><div class="f" style="width:${(v/max)*78}%;background:${colorOf(i)}"></div><div class="t">${nf.format(v)} · ${s.label}</div></div>`;
+        }).join("")}
+      </div>
+    </div>`).join("");
+
+  return `
+  <header class="hero">
+    <div class="eyebrow">${g.eyebrow}</div>
+    <h1>${g.title}</h1>
+    <p class="lede">${g.lede}</p>
+    <div class="meta-row">${g.meta.map(m => `<span>${m}</span>`).join("")}</div>
+  </header>
+
+  <h2>${g.secTiles}</h2>
+  <p class="section-note">${g.tilesNote}</p>
+  ${tiles(g.tiles)}
+
+  <figure style="margin-top:26px">
+    <figcaption>${g.compareFig}</figcaption>
+    <div class="sub">${g.compareNote}</div>
+    <div class="legend">
+      ${SER.map((s,i) => `<span><i class="swatch" style="background:${colorOf(i)}"></i> ${s.label}</span>`).join("")}
+    </div>
+    <div class="churn">${compare}</div>
+    <details class="tbl"><summary>${L.ui.tableToggle}</summary><div class="scroll-x"><table>
+      <thead><tr><th>${L.ui.thYear}</th>${SER.map(s => `<th class="num">${s.label}</th>`).join("")}<th class="num">${L.ui.thTotal}</th></tr></thead>
+      <tbody>${years.map(y => {
+        const vals = SER.map(s => s.byYear[y] || 0);
+        return `<tr><td>${y}</td>${vals.map(v => `<td class="num">${nf.format(v)}</td>`).join("")}<td class="num">${nf.format(vals.reduce((a,b)=>a+b,0))}</td></tr>`;
+      }).join("")}</tbody>
+    </table></div></details>
+  </figure>
+
+  <h2>${g.secArc}</h2>
+  <p class="section-note">${g.arcNote}</p>
+  <div class="scroll-x">
+    <table class="tbl-wrap">
+      <thead><tr><th>${L.ui.thPeriod}</th><th>${L.ui.thFocus}</th><th>${L.ui.thProjects}</th><th>${L.ui.thMilestones}</th></tr></thead>
+      <tbody>${g.arc.map(a => `<tr>
+        <td style="font-variant-numeric:tabular-nums;color:var(--text-secondary)">${a.when}</td>
+        <td><strong>${a.focus}</strong></td>
+        <td style="color:var(--text-muted);font-size:12.5px">${a.projects}</td>
+        <td style="font-size:13px">${a.milestone}</td></tr>`).join("")}</tbody>
+    </table>
+  </div>
+
+  <h2>${g.secCross}</h2>
+  <p class="section-note">${g.crossNote}</p>
+  ${cards(g.crossFindings)}
+
+  <h2>${g.secStack}</h2>
+  <p class="section-note">${g.stackNote}</p>
+  ${cards(g.stack)}
+
+  <h2>${L.ui.secTime}</h2>
+  <p class="section-note">${g.timeNote}</p>
+  ${tiles(g.timeTiles)}
+
+  <h2>${g.secHow}</h2>
+  ${g.disclaimer}
+
+  <footer>${g.footer}</footer>
+  `;
+}
+
+/* ---------- montaje ---------- */
+const TABS = [
+  {id:"global",   render: globalPanel,                 count: null},
+  {id:"slidesgo", render: () => repoPanel("slidesgo"), count: NUM.slidesgo.commits, months: "slidesgo"},
+  {id:"wepik",    render: () => repoPanel("wepik"),    count: NUM.wepik.commits,    months: "wepik"},
+  {id:"otros",    render: othersPanel,                 count: NUM.otros.commits}
+];
+
+function build() {
+  document.documentElement.lang = L.htmlLang;
+  document.getElementById("brandName").textContent = L.brandName;
+  document.getElementById("brandWho").textContent = L.brandWho;
+  tabsEl.setAttribute("aria-label", L.tabAria);
+  langEl.setAttribute("aria-label", L.langAria);
+
+  tabsEl.innerHTML = "";
+  panelsEl.innerHTML = "";
+
+  TABS.forEach(item => {
+    const txt = L[item.id];
+    const btn = document.createElement("button");
+    btn.className = "tab";
+    btn.type = "button";
+    btn.setAttribute("role", "tab");
+    btn.id = `tab-${item.id}`;
+    btn.setAttribute("aria-controls", `panel-${item.id}`);
+    btn.setAttribute("aria-selected", "false");
+    btn.title = txt.hint || "";
+    btn.innerHTML = txt.label + (item.count ? ` <span class="cnt">${nf.format(item.count)}</span>` : "");
+    btn.addEventListener("click", () => select(item.id, true));
+    tabsEl.appendChild(btn);
+
+    const panel = document.createElement("section");
+    panel.className = "panel";
+    panel.id = `panel-${item.id}`;
+    panel.setAttribute("role", "tabpanel");
+    panel.setAttribute("aria-labelledby", `tab-${item.id}`);
+    panel.hidden = true;
+    panel.innerHTML = item.render();
+    panelsEl.appendChild(panel);
+    if (item.months) fillMonths(item.months, panel);
+  });
+
+  select(CURRENT_TAB, false);
+}
+
+function select(id, setHash) {
+  if (!TABS.some(t => t.id === id)) id = TABS[0].id;
+  CURRENT_TAB = id;
+  TABS.forEach(item => {
+    const on = item.id === id;
+    document.getElementById(`tab-${item.id}`).setAttribute("aria-selected", on ? "true" : "false");
+    document.getElementById(`panel-${item.id}`).hidden = !on;
+  });
+  if (setHash) {
+    history.replaceState(null, "", "#" + id);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+}
+
+/* teclado: flechas entre pestañas */
+tabsEl.addEventListener("keydown", e => {
+  const keys = ["ArrowLeft","ArrowRight","Home","End"];
+  if (!keys.includes(e.key)) return;
+  e.preventDefault();
+  const btns = [...tabsEl.querySelectorAll(".tab")];
+  const cur = btns.findIndex(b => b.getAttribute("aria-selected") === "true");
+  let next = cur;
+  if (e.key === "ArrowLeft") next = (cur - 1 + btns.length) % btns.length;
+  if (e.key === "ArrowRight") next = (cur + 1) % btns.length;
+  if (e.key === "Home") next = 0;
+  if (e.key === "End") next = btns.length - 1;
+  select(TABS[next].id, true);
+  btns[next].focus();
+});
+
+/* ---------- idioma ---------- */
+const LANG_LABELS = { en: "EN", es: "ES" };
+const LANG_TITLES = { en: "English", es: "Español" };
+
+function store(k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
+function read(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }
+
+function detectLang() {
+  const saved = read("portfolio-lang");
+  if (saved && I18N[saved]) return saved;
+  const q = new URLSearchParams(location.search).get("lang");
+  if (q && I18N[q]) return q;
+  const navs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || "en"];
+  for (const tag of navs) {
+    const base = String(tag).toLowerCase().split("-")[0];
+    if (I18N[base]) return base;          // es → español, en → inglés
+  }
+  return "en";                             // cualquier otro idioma → inglés por defecto
+}
+
+function setLang(lang, persist) {
+  if (!I18N[lang]) lang = "en";
+  LANG = lang;
+  L = I18N[lang];
+  nf = new Intl.NumberFormat(L.locale, { useGrouping: "always" });
+  document.title = L.brandName;
+  [...langEl.querySelectorAll("button")].forEach(b => {
+    b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false");
+  });
+  if (persist) store("portfolio-lang", lang);
+  build();
+}
+
+Object.keys(LANG_LABELS).forEach(code => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.dataset.lang = code;
+  b.textContent = LANG_LABELS[code];
+  b.title = LANG_TITLES[code];
+  b.setAttribute("aria-label", LANG_TITLES[code]);
+  b.setAttribute("aria-pressed", "false");
+  b.addEventListener("click", () => setLang(code, true));
+  langEl.appendChild(b);
+});
+
+const hashTab = location.hash.slice(1);
+if (TABS.some(t => t.id === hashTab)) CURRENT_TAB = hashTab;
+
+window.addEventListener("hashchange", () => {
+  const id = location.hash.slice(1);
+  if (TABS.some(t => t.id === id)) select(id, false);
+});
+
+setLang(detectLang(), false);
+</script>
+</body>
+</html>
